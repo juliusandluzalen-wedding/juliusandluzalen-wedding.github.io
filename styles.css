@@ -455,6 +455,21 @@ a {
   max-width: 60ch;
 }
 
+.prose {
+  max-width: 70ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prose p {
+  margin: 0 0 12px;
+  color: rgba(28, 28, 28, 0.82);
+}
+
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
 .grid {
   display: grid;
   gap: 16px;
