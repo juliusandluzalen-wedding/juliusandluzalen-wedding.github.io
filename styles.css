@@ -328,6 +328,23 @@ a {
   min-height: 360px;
 }
 
+.hero-banner-wrap {
+  position: absolute;
+  inset: 0;
+  border-radius: 26px;
+  overflow: hidden;
+  border: 1px solid rgba(28, 28, 28, 0.10);
+  box-shadow: var(--shadow);
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.hero-banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
 .book {
   position: absolute;
   right: 22px;
@@ -752,15 +769,8 @@ textarea:focus {
     min-height: 260px;
   }
 
-  .book {
-    right: 0;
-    left: 0;
-    margin: 0 auto;
-    height: 260px;
-  }
-
-  .hero-ornament {
-    display: none;
+  .hero-banner-wrap {
+    border-radius: 22px;
   }
 
   .grid.two {
