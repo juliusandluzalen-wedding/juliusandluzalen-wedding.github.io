@@ -99,28 +99,11 @@
     let ok = true;
 
     const name = (data.get('name') || '').toString().trim();
-    const email = (data.get('email') || '').toString().trim();
-    const attendance = (data.get('attendance') || '').toString().trim();
 
     setHint('name', '');
-    setHint('email', '');
-    setHint('attendance', '');
 
     if (!name) {
       setHint('name', 'Please enter your name.');
-      ok = false;
-    }
-
-    if (!email) {
-      setHint('email', 'Please enter your email.');
-      ok = false;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setHint('email', 'Please enter a valid email.');
-      ok = false;
-    }
-
-    if (!attendance) {
-      setHint('attendance', 'Please select an option.');
       ok = false;
     }
 
@@ -135,17 +118,10 @@
       if (!validate(data)) return;
 
       const name = encodeURIComponent((data.get('name') || '').toString().trim());
-      const email = encodeURIComponent((data.get('email') || '').toString().trim());
-      const attendance = encodeURIComponent((data.get('attendance') || '').toString().trim());
-      const notes = encodeURIComponent((data.get('notes') || '').toString().trim());
 
       const to = 'graceandrob@example.com';
       const subject = encodeURIComponent('Wedding RSVP');
-      const body =
-        `Name: ${decodeURIComponent(name)}%0D%0A` +
-        `Email: ${decodeURIComponent(email)}%0D%0A` +
-        `Attendance: ${decodeURIComponent(attendance)}%0D%0A` +
-        (notes ? `Notes: ${decodeURIComponent(notes)}%0D%0A` : '');
+      const body = `Name: ${decodeURIComponent(name)}%0D%0A`;
 
       window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
     });
