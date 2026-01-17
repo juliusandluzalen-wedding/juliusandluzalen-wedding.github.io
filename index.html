@@ -40,8 +40,31 @@
       <section class="hero" aria-label="Welcome">
         <div class="container hero-inner">
           <div class="hero-copy">
+            <div class="save-date" data-countdown="2026-12-20T16:00:00-05:00" aria-label="Save the date countdown">
+              <div class="save-date-title">Save the Date</div>
+              <div class="countdown" role="group" aria-label="Countdown">
+                <div class="countdown-item">
+                  <div class="countdown-value" data-countdown-part="days">--</div>
+                  <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-item">
+                  <div class="countdown-value" data-countdown-part="hours">--</div>
+                  <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-item">
+                  <div class="countdown-value" data-countdown-part="minutes">--</div>
+                  <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-item">
+                  <div class="countdown-value" data-countdown-part="seconds">--</div>
+                  <div class="countdown-label">Seconds</div>
+                </div>
+              </div>
+              <div class="save-date-location">Oak &amp; Evergreen Hall · 123 Winter Lane · Asheville, NC</div>
+            </div>
+
             <p class="eyebrow">December 20, 2026 | Asheville, NC</p>
-            <h1 class="hero-title">Grace & Robert</h1>
+            <h1 class="hero-title">Grace &amp; Robert</h1>
             <p class="hero-subtitle">Invite you to celebrate their wedding</p>
 
             <div class="hero-actions">
@@ -139,7 +162,7 @@
           </div>
         </div>
       </section>
-
+@@
       <section class="section" id="schedule" aria-label="Schedule">
         <div class="container">
           <div class="section-head">
@@ -147,46 +170,56 @@
             <p>A simple timeline for the day.</p>
           </div>
 
-          <div class="timeline" role="list">
-            <div class="timeline-item" role="listitem">
-              <div class="timeline-time">3:30 PM</div>
-              <div class="timeline-body">
-                <div class="timeline-title">Guests arrive</div>
-                <div class="timeline-desc">Grab a warm drink and find your seat.</div>
-              </div>
-            </div>
+          <div class="schedule-days" aria-label="Schedule details">
+            <article class="schedule-day" aria-label="Day before">
+              <header class="schedule-day-head">
+                <div class="schedule-day-date">Friday, Sept 27</div>
+                <div class="schedule-day-label">The day before</div>
+              </header>
 
-            <div class="timeline-item" role="listitem">
-              <div class="timeline-time">4:00 PM</div>
-              <div class="timeline-body">
-                <div class="timeline-title">Ceremony</div>
-                <div class="timeline-desc">A short and sweet ceremony.</div>
-              </div>
-            </div>
+              <div class="schedule-day-body">
+                <div class="schedule-illustration" aria-hidden="true"></div>
 
-            <div class="timeline-item" role="listitem">
-              <div class="timeline-time">4:30 PM</div>
-              <div class="timeline-body">
-                <div class="timeline-title">Cocktail hour</div>
-                <div class="timeline-desc">Photos, drinks, and appetizers.</div>
-              </div>
-            </div>
+                <div class="schedule-events" role="list">
+                  <div class="schedule-event" role="listitem">
+                    <h3 class="schedule-event-title">Welcome party</h3>
+                    <p class="schedule-event-time">6:00 PM – 9:00 PM</p>
+                    <p class="schedule-event-desc">Join us for a casual dinner party to kick off the weekend.</p>
+                  </div>
 
-            <div class="timeline-item" role="listitem">
-              <div class="timeline-time">5:30 PM</div>
-              <div class="timeline-body">
-                <div class="timeline-title">Reception</div>
-                <div class="timeline-desc">Dinner, toasts, and dancing.</div>
+                  <div class="schedule-event" role="listitem">
+                    <h3 class="schedule-event-title">Dress code</h3>
+                    <p class="schedule-event-time">Festive cocktail</p>
+                    <p class="schedule-event-desc">Winter tones, velvet, and sparkle encouraged. Dress comfortably.</p>
+                  </div>
+                </div>
               </div>
-            </div>
+            </article>
 
-            <div class="timeline-item" role="listitem">
-              <div class="timeline-time">10:00 PM</div>
-              <div class="timeline-body">
-                <div class="timeline-title">Last dance</div>
-                <div class="timeline-desc">Send-off and goodnight.</div>
+            <article class="schedule-day" aria-label="Wedding day">
+              <header class="schedule-day-head">
+                <div class="schedule-day-date">Saturday, Sept 28</div>
+                <div class="schedule-day-label">The wedding</div>
+              </header>
+
+              <div class="schedule-day-body">
+                <div class="schedule-illustration" aria-hidden="true"></div>
+
+                <div class="schedule-events" role="list">
+                  <div class="schedule-event" role="listitem">
+                    <h3 class="schedule-event-title">Ceremony & reception</h3>
+                    <p class="schedule-event-time">4:00 PM – 10:00 PM</p>
+                    <p class="schedule-event-desc">Ceremony followed by cocktail hour, dinner, and dancing.</p>
+                  </div>
+
+                  <div class="schedule-event" role="listitem">
+                    <h3 class="schedule-event-title">Last dance</h3>
+                    <p class="schedule-event-time">10:00 PM</p>
+                    <p class="schedule-event-desc">Send-off and goodnight.</p>
+                  </div>
+                </div>
               </div>
-            </div>
+            </article>
           </div>
         </div>
       </section>
