@@ -4,131 +4,37 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0f2a22" />
-    <title>Grace & Robert | Wedding</title>
+    <title>Julius & Luzalen | Save the Date</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300,400,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+      }
+
+      .single {
+        width: min(900px, calc(100% - 48px));
+        padding: 20px 0;
+      }
+
+      .single img {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        max-height: calc(100vh - 40px);
+        width: auto;
+        height: auto;
+        object-fit: contain;
+      }
+    </style>
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-
-    <header class="site-header" id="top">
-      <div class="container header-inner">
-        <div class="brand">
-          <span class="brand-kicker">Wedding</span>
-          <a class="brand-title" href="#top" aria-label="Back to top">Grace & Robert</a>
-        </div>
-
-        <nav class="nav" aria-label="Primary">
-          <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
-            <span class="nav-toggle-lines" aria-hidden="true"></span>
-          </button>
-
-          <div class="nav-links" id="nav-links">
-            <a href="#schedule">Schedule</a>
-            <a href="#details">Details</a>
-            <a class="nav-cta" href="#rsvp">RSVP</a>
-          </div>
-        </nav>
-      </div>
-    </header>
-
-    <main id="main">
-      <section class="intro" aria-label="Welcome">
-        <div class="container">
-          <h1 class="intro-title">Grace &amp; Robert</h1>
-          <p class="intro-subtitle">Sunday 20th December 2026</p>
-          <p class="intro-subtitle">Oak &amp; Evergreen Hall · Asheville, NC</p>
-
-          <div class="intro-banner" aria-hidden="true">
-            <img class="intro-banner-img" src="images/Website%20Banner.png" alt="" />
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="schedule" aria-label="Schedule">
-        <div class="container">
-          <div class="stack-head">
-            <p class="stack-kicker">Saturday 20th December</p>
-            <h2 class="stack-title">The Wedding</h2>
-          </div>
-
-          <div class="stack-head">
-            <p class="stack-kicker">Friday 19th December</p>
-            <h2 class="stack-title">The Party</h2>
-          </div>
-
-          <p class="stack-meta">7:30pm - 12:30am</p>
-        </div>
-      </section>
-
-      <section class="section" id="details" aria-label="Details">
-        <div class="container">
-          <div class="stack-head">
-            <p class="stack-kicker">Details</p>
-            <h2 class="stack-title">Details</h2>
-          </div>
-
-          <article class="stack-block" aria-label="What to expect">
-            <h3 class="stack-block-title">What to expect</h3>
-            <p>Oak &amp; Evergreen Hall - 123 Winter Lane, Asheville, NC 28801</p>
-            <p><a class="text-link" href="https://maps.google.com/?q=123%20Winter%20Lane%20Asheville%20NC%2028801" target="_blank" rel="noreferrer">Open in Google Maps</a></p>
-          </article>
-
-          <article class="stack-block" aria-label="Accommodation">
-            <h3 class="stack-block-title">Accomodation</h3>
-            <p>If you’re traveling in, book accommodations early—December is busy. We recommend staying downtown for easy rideshare access.</p>
-          </article>
-
-          <article class="stack-block" aria-label="Children">
-            <h3 class="stack-block-title">Children</h3>
-            <p>We love your little ones, but this will be an adults-only celebration.</p>
-          </article>
-
-          <article class="stack-block" aria-label="Dress code">
-            <h3 class="stack-block-title">Dress code</h3>
-            <p>Festive formal. Winter tones, velvet, and sparkle encouraged.</p>
-          </article>
-
-          <article class="stack-block" aria-label="Gifts">
-            <h3 class="stack-block-title">Gifts</h3>
-            <p>Your presence is the greatest gift. If you’d like to contribute, we’ll share registry details soon.</p>
-          </article>
-
-          <article class="stack-block" aria-label="Greatest hits">
-            <h3 class="stack-block-title">Greatest hits</h3>
-            <p><a class="text-link" href="https://open.spotify.com/" target="_blank" rel="noreferrer">Press for bangers</a></p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section" id="rsvp" aria-label="RSVP">
-        <div class="container">
-          <div class="stack-head">
-            <p class="stack-kicker">RSVP</p>
-            <h2 class="stack-title">RSVP</h2>
-          </div>
-
-          <p class="rsvp-prompt">Please enter your name.</p>
-
-          <form class="rsvp-min" id="rsvp-form" novalidate>
-            <label class="sr-only" for="name">Name</label>
-            <input id="name" name="name" type="text" autocomplete="name" required />
-            <div class="field-hint" data-hint-for="name"></div>
-            <button class="button" type="submit">Submit</button>
-          </form>
-        </div>
-      </section>
-
-      <footer class="footer">
-        <div class="container footer-inner">
-          <p class="footer-title">Grace & Robert</p>
-          <p class="footer-sub">Thank you for celebrating with us.</p>
-        </div>
-      </footer>
+    <main id="main" class="single" aria-label="Save the date">
+      <img src="images/Save%20the%20date.png" alt="Save the date for Julius & Luzalen" />
     </main>
-
-    <script src="script.js"></script>
   </body>
 </html>
