@@ -41,6 +41,20 @@
         object-fit: contain;
         object-position: center;
       }
+
+      @media (min-width: 721px) {
+        .single {
+          width: min(760px, calc(100% - 48px));
+          height: auto;
+          padding: 40px 0;
+        }
+
+        .single img {
+          width: 100%;
+          height: auto;
+          max-height: calc(100vh - 80px);
+        }
+      }
     </style>
   </head>
   <body>
