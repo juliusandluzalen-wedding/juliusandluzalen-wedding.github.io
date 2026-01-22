@@ -726,6 +726,13 @@ a {
     margin: 40px auto 0;
     padding: 40px;
   }
+  .panel.panel-soft img {
+    transform: scale(1);
+    margin: 0 auto;
+    object-position: center;
+    width: 100%;
+    height: auto;
+  }
 }
 
 @media (max-width: 600px) {
@@ -746,6 +753,13 @@ a {
     margin: 40px auto 0;
     padding: 40px;
   }
+  .panel.panel-soft img {
+    transform: scale(1);
+    margin: 0 auto;
+    object-position: center;
+    width: 100%;
+    height: auto;
+  }
 }
 
 @media (max-width: 480px) {
@@ -765,6 +779,13 @@ a {
   .mini-box {
     margin: 40px auto 0;
     padding: 40px;
+  }
+  .panel.panel-soft img {
+    transform: scale(1);
+    margin: 0 auto;
+    object-position: center;
+    width: 100%;
+    height: auto;
   }
 }
 
