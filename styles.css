@@ -702,6 +702,25 @@ a {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mini-box {
+    margin: 400px auto 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .mini-box {
+    margin: 400px auto 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .mini-box {
+    margin: 400px auto 0;
+  }
+}
+
 .rsvp-prompt {
   margin: 0 0 14px;
   text-align: center;
