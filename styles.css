@@ -202,7 +202,11 @@ a {
   padding: 10px 10px;
   border-radius: 14px;
   border: 1px solid rgba(28, 28, 28, 0.08);
-  background: rgba(255, 250, 242, 0.74);
+  background: url('images/savetheDate_bgnd.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   text-align: center;
 }
 
