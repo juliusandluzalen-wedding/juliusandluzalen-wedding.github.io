@@ -726,7 +726,7 @@ a {
     padding: 40px;
   }
   .panel.panel-soft img {
-    transform: scale(1);
+    transform: scale(1.75);
     margin: 0 auto;
     object-position: center;
     width: 100%;
@@ -752,7 +752,7 @@ a {
     padding: 40px;
   }
   .panel.panel-soft img {
-    transform: scale(1);
+    transform: scale(1.75);
     margin: 0 auto;
     object-position: center;
     width: 100%;
@@ -778,7 +778,7 @@ a {
     padding: 40px;
   }
   .panel.panel-soft img {
-    transform: scale(1);
+    transform: scale(1.75);
     margin: 0 auto;
     object-position: center;
     width: 100%;
