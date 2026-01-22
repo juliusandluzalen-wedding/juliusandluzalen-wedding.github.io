@@ -237,13 +237,11 @@
       return { ok: false, reason: 'not_configured' };
     }
 
-    const res = await fetch(GOOGLE_APPS_SCRIPT_WEB_APP_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+    const qs = new URLSearchParams(payload).toString();
+    const url = `${GOOGLE_APPS_SCRIPT_WEB_APP_URL}?${qs}`;
+    const res = await fetch(url, { method: 'GET', mode: 'no-cors' });
 
-    if (!res.ok) return { ok: false, reason: 'http_error' };
+    // With no-cors, we can’t read the response, so assume success if no network error
     return { ok: true };
   };
 
