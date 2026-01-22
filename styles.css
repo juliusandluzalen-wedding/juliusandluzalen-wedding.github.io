@@ -609,6 +609,7 @@ a {
   border-radius: 16px;
   text-align: center;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  margin: 20px auto 0;
 }
 
 .joining-question {
@@ -702,22 +703,68 @@ a {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
+.mobile-spacer {
+  display: none;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .mobile-spacer {
+    display: block;
+    height: 2000px;
+  }
+  .container {
+    margin-top: 0 !important;
+  }
+  .section {
+    padding-top: 0 !important;
+  }
+  .mini-form {
+    margin: 40px auto 0;
+  }
   .mini-box {
-    margin: 400px auto 0;
+    margin: 40px auto 0;
+    padding: 40px;
   }
 }
 
 @media (max-width: 600px) {
+  .mobile-spacer {
+    display: block;
+    height: 2000px;
+  }
+  .container {
+    margin-top: 0 !important;
+  }
+  .section {
+    padding-top: 0 !important;
+  }
+  .mini-form {
+    margin: 40px auto 0;
+  }
   .mini-box {
-    margin: 400px auto 0;
+    margin: 40px auto 0;
+    padding: 40px;
   }
 }
 
 @media (max-width: 480px) {
+  .mobile-spacer {
+    display: block;
+    height: 2000px;
+  }
+  .container {
+    margin-top: 0 !important;
+  }
+  .section {
+    padding-top: 0 !important;
+  }
+  .mini-form {
+    margin: 40px auto 0;
+  }
   .mini-box {
-    margin: 400px auto 0;
+    margin: 40px auto 0;
+    padding: 40px;
   }
 }
 
