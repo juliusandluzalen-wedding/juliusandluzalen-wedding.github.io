@@ -562,6 +562,10 @@ a {
   border: 0;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .rsvp-prompt {
   margin: 0 0 14px;
   text-align: center;
