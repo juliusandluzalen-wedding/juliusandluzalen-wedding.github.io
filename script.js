@@ -93,6 +93,37 @@
   const attending = document.getElementById('attending');
   const bringingPlusOne = document.getElementById('bringing_plus_one');
   const additionalGuests = document.getElementById('additional_guests');
+  const acceptBtn = document.getElementById('accept-btn');
+  const declineBtn = document.getElementById('decline-btn');
+  const miniBox = document.querySelector('.mini-box');
+  const fullForm = document.getElementById('full-form');
+
+  // Handle accept/decline button clicks
+  acceptBtn?.addEventListener('click', () => {
+    attending.value = 'yes';
+    // Copy name from mini box to full form
+    const miniNameInput = miniBox.querySelector('#name');
+    const fullNameInput = fullForm.querySelector('#name');
+    if (miniNameInput && fullNameInput) {
+      fullNameInput.value = miniNameInput.value;
+    }
+    miniBox.style.display = 'none';
+    fullForm.classList.remove('hidden');
+    syncConditionals();
+  });
+
+  declineBtn?.addEventListener('click', () => {
+    attending.value = 'no';
+    // Copy name from mini box to full form
+    const miniNameInput = miniBox.querySelector('#name');
+    const fullNameInput = fullForm.querySelector('#name');
+    if (miniNameInput && fullNameInput) {
+      fullNameInput.value = miniNameInput.value;
+    }
+    miniBox.style.display = 'none';
+    fullForm.classList.remove('hidden');
+    syncConditionals();
+  });
 
   const setHint = (name, msg) => {
     const el = document.querySelector(`[data-hint-for="${name}"]`);
@@ -158,12 +189,12 @@
     const phone = (data.get('phone') || '').toString().trim();
     const email = (data.get('email') || '').toString().trim();
 
-    if ((invitationPref === 'phone' || invitationPref === 'both') && !phone) {
+    if (invitationPref === 'phone' && !phone) {
       setHint('phone', 'Please provide a phone number.');
       ok = false;
     }
 
-    if ((invitationPref === 'email' || invitationPref === 'both') && !email) {
+    if (invitationPref === 'email' && !email) {
       setHint('email', 'Please provide an email address.');
       ok = false;
     }
@@ -177,23 +208,78 @@
       }
     }
 
-    const extraGuests = (data.get('additional_guests') || '').toString();
-    if (!extraGuests) {
-      setHint('additional_guests', 'Please select yes or no.');
-      ok = false;
-    }
-    if (extraGuests === 'yes') {
-      const n = Number((data.get('additional_guests_count') || '').toString());
-      if (!Number.isFinite(n) || n < 1) {
-        setHint('additional_guests_count', 'Please enter how many additional guests you need.');
-        ok = false;
-      }
-    }
-
     return ok;
   };
 
   const RSVP_STORAGE_KEY = 'wedding_save_the_date_submissions_v1';
+  const RSVP_INDEX_KEY = 'wedding_save_the_date_index_v1';
+
+  const buildIndex = () => {
+    try {
+      const raw = window.localStorage.getItem(RSVP_STORAGE_KEY);
+      const list = raw ? JSON.parse(raw) : [];
+      const index = {};
+      list.forEach((entry) => {
+        if (entry.email) index[entry.email.toLowerCase()] = entry;
+        if (entry.phone) index[entry.phone.replace(/\D/g, '')] = entry;
+      });
+      window.localStorage.setItem(RSVP_INDEX_KEY, JSON.stringify(index));
+      return index;
+    } catch {
+      return {};
+    }
+  };
+
+  const getIndex = () => {
+    try {
+      const raw = window.localStorage.getItem(RSVP_INDEX_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  };
+
+  const findExistingSubmission = (email, phone) => {
+    const index = getIndex();
+    const key = email ? email.toLowerCase() : phone.replace(/\D/g, '');
+    return index[key] || null;
+  };
+
+  const showUpdatePrompt = (existing) => {
+    const formEl = document.getElementById('save-the-date-response-form');
+    const statusEl = document.getElementById('save-the-date-status');
+    if (!formEl || !statusEl) return;
+
+    const attendingYes = existing.attending === 'yes';
+    const currentStatusText = attendingYes
+      ? 'You previously responded that you can attend.'
+      : 'You previously responded that you cannot attend.';
+
+    formEl.style.display = 'none';
+    statusEl.innerHTML = `
+      <div style="text-align:center;">
+        <p>${currentStatusText}</p>
+        <p>Do you want to update your response?</p>
+        <button class="button" style="margin-top:12px;" id="update-response-btn">Update Response</button>
+      </div>
+    `;
+
+    const updateBtn = document.getElementById('update-response-btn');
+    if (updateBtn) {
+      updateBtn.addEventListener('click', () => {
+        statusEl.innerHTML = '';
+        formEl.style.display = '';
+        formEl.attending.value = existing.attending;
+        formEl.name.value = existing.name || '';
+        formEl.email.value = existing.email || '';
+        formEl.phone.value = existing.phone || '';
+        formEl.invitation_preference.value = existing.invitation_preference || '';
+        formEl.bringing_plus_one.value = existing.bringing_plus_one || '';
+        formEl.plus_one_name.value = existing.plus_one_name || '';
+        syncConditionals();
+      });
+    }
+  };
 
   const storeSubmission = (payload) => {
     try {
@@ -202,6 +288,7 @@
       if (Array.isArray(list)) {
         list.push(payload);
         window.localStorage.setItem(RSVP_STORAGE_KEY, JSON.stringify(list));
+        buildIndex();
       }
     } catch {
       // ignore storage failures
@@ -214,35 +301,45 @@
       submitted_at: new Date().toISOString(),
       attending: v('attending'),
       name: v('name'),
+      email: v('email'),
+      phone: v('phone'),
+      invitation_preference: v('invitation_preference'),
       bringing_plus_one: v('bringing_plus_one'),
       plus_one_name: v('plus_one_name'),
-      phone: v('phone'),
-      email: v('email'),
-      invitation_preference: v('invitation_preference'),
-      additional_guests: v('additional_guests'),
-      additional_guests_count: v('additional_guests_count'),
-      accommodations: v('accommodations'),
     };
   };
 
-  const submitToGoogle = async (payload) => {
+  const submitToGoogle = (payload) => {
     // This site is static (GitHub Pages). Writing to a Google Sheet requires either:
     // 1) a Google Form "formResponse" endpoint, or
     // 2) a Google Apps Script Web App endpoint.
     //
     // To enable submission, set one of these (and implement mapping where needed):
-    const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyieWDvZCfcmwhsTiwP1FgIFAdNLk0RUYz2jgsPNxiwZwOYAbC-J2B98mWHKxJf8A/exec';
+    const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyfxTDPai30EsgkV8AMiPruFb_RKD2YN4RVgwPrZuA5beg_hbs1gv6iJI976KTvRk9-/exec';
 
     if (!GOOGLE_APPS_SCRIPT_WEB_APP_URL) {
-      return { ok: false, reason: 'not_configured' };
+      return Promise.resolve({ ok: false, reason: 'not_configured' });
     }
 
     const qs = new URLSearchParams(payload).toString();
-    const url = `${GOOGLE_APPS_SCRIPT_WEB_APP_URL}?${qs}`;
-    const res = await fetch(url, { method: 'GET', mode: 'no-cors' });
+    const url = `${GOOGLE_APPS_SCRIPT_WEB_APP_URL}?callback=cb_${Date.now()}&${qs}`;
 
-    // With no-cors, we can’t read the response, so assume success if no network error
-    return { ok: true };
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      const callbackName = `cb_${Date.now()}`;
+      window[callbackName] = (data) => {
+        document.head.removeChild(script);
+        delete window[callbackName];
+        resolve({ ok: true });
+      };
+      script.onerror = () => {
+        document.head.removeChild(script);
+        delete window[callbackName];
+        resolve({ ok: false, reason: 'network_error' });
+      };
+      script.src = url;
+      document.head.appendChild(script);
+    });
   };
 
   if (form instanceof HTMLFormElement) {
@@ -250,6 +347,23 @@
     attending?.addEventListener('change', syncConditionals);
     bringingPlusOne?.addEventListener('change', syncConditionals);
     additionalGuests?.addEventListener('change', syncConditionals);
+
+    // Check for existing submission on load
+    const emailInput = form.querySelector('#email');
+    const phoneInput = form.querySelector('#phone');
+    const checkExisting = () => {
+      const email = (emailInput?.value || '').toString().trim();
+      const phone = (phoneInput?.value || '').toString().trim();
+      if (email || phone) {
+        const existing = findExistingSubmission(email, phone);
+        if (existing) {
+          showUpdatePrompt(existing);
+        }
+      }
+    };
+
+    emailInput?.addEventListener('blur', checkExisting);
+    phoneInput?.addEventListener('blur', checkExisting);
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -264,17 +378,24 @@
 
       submitToGoogle(payload)
         .then((result) => {
-          if (result.ok) {
-            setStatus('Thank you! Your response was submitted.');
-            form.reset();
-            syncConditionals();
-            return;
+          const attending = payload.attending;
+          if (attending === 'yes') {
+            setStatus('Thank you for responding to our save-the-date — we’re looking forward to celebrating with you!');
+          } else {
+            setStatus('Thank you so much for letting us know. We appreciate you responding to our save-the-date and will miss celebrating with you.');
           }
-
-          setStatus('Thank you! Your response was saved on this device, but Google sync is not yet configured.');
+          form.reset();
+          syncConditionals();
         })
         .catch(() => {
-          setStatus('Thank you! Your response was saved on this device, but we could not reach the submission endpoint.');
+          const attending = payload.attending;
+          if (attending === 'yes') {
+            setStatus('Thank you for responding to our save-the-date — we’re looking forward to celebrating with you!');
+          } else {
+            setStatus('Thank you so much for letting us know. We appreciate you responding to our save-the-date and will miss celebrating with you.');
+          }
+          form.reset();
+          syncConditionals();
         });
     });
   }

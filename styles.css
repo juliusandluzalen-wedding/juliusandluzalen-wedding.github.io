@@ -14,7 +14,7 @@
   --shadow: 0 14px 40px rgba(15, 42, 34, 0.16);
   --radius: 18px;
 
-  --serif: "Fraunces", ui-serif, Georgia, serif;
+  --serif: "Playfair Display", ui-serif, Georgia, serif;
   --sans: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
@@ -413,7 +413,12 @@ a {
 }
 
 .section {
-  padding: 64px 0;
+  padding: 0 24px 80px;
+  position: relative;
+}
+
+.section:first-child {
+  padding-top: 0;
 }
 
 .section-alt {
@@ -564,6 +569,137 @@ a {
 
 .hidden {
   display: none !important;
+}
+
+.panel.panel-soft {
+  background: white;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 40px;
+  border: none;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+
+.panel.panel-soft img {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: -30px auto 0;
+  border: none;
+  transform: scale(0.7);
+  transform-origin: top center;
+  object-position: 0 -30px;
+}
+
+/* Mini form box */
+.mini-form {
+  max-width: 500px;
+  margin: -600px auto 0;
+  position: relative;
+  z-index: 10;
+}
+
+.mini-box {
+  background: #fd989e;
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.joining-question {
+  color: #333;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 25px 0;
+  font-family: 'Playfair Display', serif;
+}
+
+.mini-box .field {
+  margin-bottom: 20px;
+}
+
+.mini-box .field label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+}
+
+.mini-box .field input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.3s ease;
+  background: #ffffff;
+}
+
+.mini-box .field input:focus {
+  outline: none;
+  border-color: #c41e3a;
+}
+
+.response-label {
+  color: #333;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 10px 0 10px 0;
+  font-family: 'Playfair Display', serif;
+  text-align: center;
+}
+
+.response-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 0px;
+}
+
+.response-btn {
+  padding: 16px 24px;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Playfair Display', serif;
+}
+
+.response-btn.accepting {
+  background: #c2d38a;
+  color: #000000;
+}
+
+.response-btn.accepting:hover {
+  background: #b8c87f;
+  transform: translateY(-2px);
+}
+
+.response-btn.declining {
+  background: #c2d38a;
+  color: #000000;
+}
+
+.response-btn.declining:hover {
+  background: #b8c87f;
+  transform: translateY(-2px);
+}
+
+.full-form {
+  margin-top: 30px;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .rsvp-prompt {

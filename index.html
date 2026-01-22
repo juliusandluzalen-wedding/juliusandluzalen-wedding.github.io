@@ -7,7 +7,7 @@
     <title>Julius & Luzalen | Save the Date</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300,400,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
     <style>
       html,
@@ -23,101 +23,77 @@
     <main id="main" aria-label="Wedding details and RSVP">
       <section class="section" aria-label="Save the date">
         <div class="container">
-          <div class="stack-head">
-            <p class="stack-kicker">Save the date</p>
-            <h1 class="stack-title">Julius &amp; Luzalen</h1>
-            <p class="stack-meta">December 24, 2026</p>
-          </div>
-
           <div class="panel panel-soft">
             <img src="images/Save%20the%20date.png" alt="Save the date for Julius & Luzalen" />
           </div>
-        </div>
-      </section>
-
-      <section class="section section-alt" id="save-the-date-form" aria-label="Save the date response">
-        <div class="container">
-          <form id="save-the-date-response-form" class="form rsvp-min" autocomplete="on">
-            <div class="field">
-              <label for="attending">Can you attend on December 24, 2026?</label>
-              <select id="attending" name="attending" required>
-                <option value="" selected disabled>Select one</option>
-                <option value="yes">Yes, I can attend</option>
-                <option value="no">No, I cannot attend</option>
-              </select>
-              <div class="field-hint" data-hint-for="attending"></div>
+          
+          <form id="save-the-date-response-form" class="form mini-form" autocomplete="on">
+            <div class="mini-box">
+              <p class="joining-question">Will you be joining us on our special day?</p>
+              
+              <div class="field">
+                <label for="name">Your Name</label>
+                <input id="name" name="name" type="text" inputmode="text" autocomplete="name" />
+                <div class="field-hint" data-hint-for="name"></div>
+              </div>
+              
+              <p class="response-label">RESPONSE:</p>
+              
+              <div class="response-buttons">
+                <button type="button" class="response-btn accepting" id="accept-btn">Joyfully accepting</button>
+                <button type="button" class="response-btn declining" id="decline-btn">Regretfully declining</button>
+              </div>
             </div>
+            
+            <input type="hidden" id="attending" name="attending" />
+            
+            <div class="full-form hidden" id="full-form">
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" inputmode="email" autocomplete="email" />
+                <div class="field-hint" data-hint-for="email"></div>
+              </div>
 
-            <div class="field" data-conditional="attending-yes">
-              <label for="name">Your name</label>
-              <input id="name" name="name" type="text" inputmode="text" autocomplete="name" />
-              <div class="field-hint" data-hint-for="name"></div>
-            </div>
+              <div class="field">
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" pattern="[0-9\s\-\+\(\)]*" />
+                <div class="field-hint" data-hint-for="phone"></div>
+              </div>
 
-            <div class="field" data-conditional="attending-yes">
-              <label for="bringing_plus_one">Plus one?</label>
-              <select id="bringing_plus_one" name="bringing_plus_one">
-                <option value="" selected disabled>Select one</option>
-                <option value="no">No</option>
-                <option value="yes">Yes</option>
-              </select>
-              <div class="field-hint" data-hint-for="bringing_plus_one"></div>
-            </div>
+              <div class="field">
+                <label for="invitation_preference">Invitation preference</label>
+                <select id="invitation_preference" name="invitation_preference" required>
+                  <option value="" selected disabled>Select one</option>
+                  <option value="phone">Phone (text)</option>
+                  <option value="email">Email</option>
+                </select>
+                <div class="field-hint" data-hint-for="invitation_preference"></div>
+              </div>
 
-            <div class="field hidden" data-conditional="plus-one-name">
-              <label for="plus_one_name">Plus one name</label>
-              <input id="plus_one_name" name="plus_one_name" type="text" inputmode="text" autocomplete="name" />
-              <div class="field-hint" data-hint-for="plus_one_name"></div>
-            </div>
+              <div class="field">
+                <label for="bringing_plus_one">Will you be bringing a plus one?</label>
+                <select id="bringing_plus_one" name="bringing_plus_one">
+                  <option value="" selected disabled>Select one</option>
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
+                </select>
+                <div class="field-hint" data-hint-for="bringing_plus_one"></div>
+              </div>
 
-            <div class="field" data-conditional="attending-yes">
-              <label for="phone">Phone number</label>
-              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" />
-              <div class="field-hint" data-hint-for="phone"></div>
-            </div>
+              <div class="field hidden" data-conditional="plus-one-name">
+                <label for="plus_one_name">Plus one name</label>
+                <input id="plus_one_name" name="plus_one_name" type="text" inputmode="text" autocomplete="name" />
+                <div class="field-hint" data-hint-for="plus_one_name"></div>
+              </div>
 
-            <div class="field" data-conditional="attending-yes">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" />
-              <div class="field-hint" data-hint-for="email"></div>
-            </div>
+              <div class="field">
+                <p class="form-meta">If you need additional guests or accommodations, or have questions, please email <a href="mailto:juliusandluzalen@gmail.com">juliusandluzalen@gmail.com</a></p>
+              </div>
 
-            <div class="field" data-conditional="attending-yes">
-              <label for="invitation_preference">How should we send your invitation?</label>
-              <select id="invitation_preference" name="invitation_preference" required>
-                <option value="" selected disabled>Select one</option>
-                <option value="email">Email</option>
-                <option value="phone">Phone (text/call)</option>
-                <option value="both">Both</option>
-              </select>
-              <div class="field-hint" data-hint-for="invitation_preference"></div>
-            </div>
-
-            <div class="field" data-conditional="attending-yes">
-              <label for="additional_guests">Additional guests needed?</label>
-              <select id="additional_guests" name="additional_guests" required>
-                <option value="" selected disabled>Select one</option>
-                <option value="no">No</option>
-                <option value="yes">Yes</option>
-              </select>
-              <div class="field-hint" data-hint-for="additional_guests"></div>
-            </div>
-
-            <div class="field hidden" data-conditional="additional-guests-count">
-              <label for="additional_guests_count">How many additional guests?</label>
-              <input id="additional_guests_count" name="additional_guests_count" type="number" min="1" step="1" inputmode="numeric" />
-              <div class="field-hint" data-hint-for="additional_guests_count"></div>
-            </div>
-
-            <div class="field" data-conditional="attending-yes">
-              <label for="accommodations">Do you require accommodations?</label>
-              <textarea id="accommodations" name="accommodations" rows="3" placeholder="Let us know any needs (dietary, accessibility, lodging, etc.)"></textarea>
-              <div class="field-hint" data-hint-for="accommodations"></div>
-            </div>
-
-            <div class="form-actions">
-              <button class="button" type="submit">Send Response</button>
-              <p class="form-meta" id="save-the-date-status" role="status" aria-live="polite"></p>
+              <div class="form-actions">
+                <button class="button" type="submit">Send Response</button>
+                <p class="form-meta" id="save-the-date-status" role="status" aria-live="polite"></p>
+              </div>
             </div>
           </form>
         </div>
