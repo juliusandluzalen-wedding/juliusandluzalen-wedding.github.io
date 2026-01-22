@@ -608,7 +608,7 @@ a {
 }
 
 .mini-box {
-  background: #fd989e;
+  background: rgba(253, 152, 158, 0.8);
   padding: 30px;
   border-radius: 16px;
   text-align: center;
