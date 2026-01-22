@@ -710,8 +710,7 @@ a {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .mobile-spacer {
-    display: block;
-    height: 2000px;
+    display: none;
   }
   .container {
     margin-top: 0 !important;
@@ -737,8 +736,7 @@ a {
 
 @media (max-width: 600px) {
   .mobile-spacer {
-    display: block;
-    height: 2000px;
+    display: none;
   }
   .container {
     margin-top: 0 !important;
@@ -764,8 +762,7 @@ a {
 
 @media (max-width: 480px) {
   .mobile-spacer {
-    display: block;
-    height: 2000px;
+    display: none;
   }
   .container {
     margin-top: 0 !important;
