@@ -608,45 +608,45 @@ a {
   background-position: top left;
   background-repeat: repeat;
   padding: 40px 0;
-  margin: -550px 0;
+  margin: -550px 0 !important;
   width: 100%;
   background: url('images/savetheDate_bgnd.png') auto top left repeat;
 }
 
 /* Dynamic responsive adjustments */
 @media (min-width: 1200px) {
-  .form-section {
-    margin: -600px 0;
+  section.form-section {
+    margin: -600px 0 !important;
   }
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
-  .form-section {
-    margin: -550px 0;
+  section.form-section {
+    margin: -550px 0 !important;
   }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-  .form-section {
-    margin: -450px 0;
+  section.form-section {
+    margin: -450px 0 !important;
   }
 }
 
 @media (max-width: 767px) {
-  .form-section {
-    margin: 0 0;
+  section.form-section {
+    margin: 200px 0 !important;
   }
 }
 
 @media (max-width: 600px) {
-  .form-section {
-    margin: 0 0;
+  section.form-section {
+    margin: 200px 0 !important;
   }
 }
 
 @media (max-width: 480px) {
-  .form-section {
-    margin: 0 0;
+  section.form-section {
+    margin: 200px 0 !important;
   }
 }
 
