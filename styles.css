@@ -634,19 +634,19 @@ a {
 
 @media (max-width: 767px) {
   section.form-section {
-    margin: 200px 0 !important;
+    margin: 100px 0 !important;
   }
 }
 
 @media (max-width: 600px) {
   section.form-section {
-    margin: 200px 0 !important;
+    margin: 100px 0 !important;
   }
 }
 
 @media (max-width: 480px) {
   section.form-section {
-    margin: 200px 0 !important;
+    margin: 100px 0 !important;
   }
 }
 
