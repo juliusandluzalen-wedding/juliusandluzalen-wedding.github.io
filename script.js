@@ -133,9 +133,36 @@
     }
     
     attending.value = 'no';
-    // Show thank you message for declining guests in the mini-box
-    miniBox.innerHTML = '<p style="font-size: 16px; font-family: Alegreya, serif; color: #333; text-align: center; padding: 20px;">Thank you for letting us know. You\'ll be missed, but we\'re grateful for your warm wishes and support from afar.</p>';
-    // Don't show the full form for declining guests
+    
+    // Create submission payload for declining guest
+    const payload = {
+      attending: 'no',
+      name: name,
+      email: '',
+      phone: '',
+      invitation_preference: '',
+      bringing_plus_one: '',
+      plus_one_name: '',
+      additional_guests: '',
+      timestamp: new Date().toISOString()
+    };
+    
+    // Store submission locally
+    storeSubmission(payload);
+    
+    // Submit to Google
+    setStatus('Submitting...');
+    submitToGoogle(payload)
+      .then(() => {
+        setStatus('Thank you so much for letting us know. We appreciate you responding to our save-the-date and will miss celebrating with you.');
+        // Show thank you message for declining guests in the mini-box
+        miniBox.innerHTML = '<p style="font-size: 16px; font-family: Alegreya, serif; color: #333; text-align: center; padding: 20px;">Thank you for letting us know. You\'ll be missed, but we\'re grateful for your warm wishes and support from afar.</p>';
+      })
+      .catch(() => {
+        setStatus('Thank you so much for letting us know. We appreciate you responding to our save-the-date and will miss celebrating with you.');
+        // Show thank you message for declining guests in the mini-box
+        miniBox.innerHTML = '<p style="font-size: 16px; font-family: Alegreya, serif; color: #333; text-align: center; padding: 20px;">Thank you for letting us know. You\'ll be missed, but we\'re grateful for your warm wishes and support from afar.</p>';
+      });
   });
 
   const setHint = (name, msg) => {
@@ -417,28 +444,41 @@
   };
 
   const showUpdatePrompt = (existing) => {
-    alert('showUpdatePrompt called!');
-    
-    // Show message in status area with visible styling
-    const statusEl = document.getElementById('save-the-date-status');
-    if (statusEl) {
-      statusEl.innerHTML = '<div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center; font-size: 16px; font-family: Alegreya, serif; color: #d4a574; font-weight: bold; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">Either your email and/or phone number already is in the file, please email juliusandluzalen@gmail.com for assistance<br><br><button class="button" onclick="location.reload()">Start Over</button></div>';
-      statusEl.style.display = 'block';
-      statusEl.style.visibility = 'visible';
-      statusEl.style.opacity = '1';
-      alert('Message set in status element with styling');
-    } else {
-      alert('Status element not found!');
-    }
-    
     // Hide the form to prevent submission
     const formEl = document.getElementById('save-the-date-response-form');
     if (formEl) {
       formEl.style.display = 'none';
-      alert('Form hidden');
-    } else {
-      alert('Form element not found!');
     }
+    
+    // Create a new overlay element to show the message
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.background = 'rgba(0,0,0,0.5)';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.zIndex = '9999';
+    
+    const messageBox = document.createElement('div');
+    messageBox.style.background = 'white';
+    messageBox.style.padding = '40px';
+    messageBox.style.borderRadius = '16px';
+    messageBox.style.textAlign = 'center';
+    messageBox.style.maxWidth = '500px';
+    messageBox.style.fontFamily = 'Alegreya, serif';
+    messageBox.style.fontSize = '16px';
+    messageBox.style.color = '#d4a574';
+    messageBox.style.fontWeight = 'normal';
+    messageBox.style.boxShadow = '0 4px 16px rgba(0,0,0,0.2)';
+    
+    messageBox.innerHTML = 'This email or phone number seems to already be on our list! If something needs adjusting, please email us at juliusandluzalen@gmail.com and we\'ll take care of it.<br><br><button class="button" onclick="location.reload()">Start Over</button>';
+    
+    overlay.appendChild(messageBox);
+    document.body.appendChild(overlay);
   };
 
   const storeSubmission = (payload) => {
