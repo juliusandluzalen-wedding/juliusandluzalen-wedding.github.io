@@ -100,9 +100,18 @@
 
   // Handle accept/decline button clicks
   acceptBtn?.addEventListener('click', () => {
+    // Validate name before proceeding
+    const miniNameInput = miniBox.querySelector('#name');
+    const name = (miniNameInput?.value || '').toString().trim();
+    
+    if (!name) {
+      setHint('name', 'Please enter your name');
+      miniNameInput?.focus();
+      return;
+    }
+    
     attending.value = 'yes';
     // Copy name from mini box to full form
-    const miniNameInput = miniBox.querySelector('#name');
     const fullNameInput = fullForm.querySelector('#name');
     if (miniNameInput && fullNameInput) {
       fullNameInput.value = miniNameInput.value;
@@ -113,16 +122,20 @@
   });
 
   declineBtn?.addEventListener('click', () => {
-    attending.value = 'no';
-    // Copy name from mini box to full form
+    // Validate name before proceeding
     const miniNameInput = miniBox.querySelector('#name');
-    const fullNameInput = fullForm.querySelector('#name');
-    if (miniNameInput && fullNameInput) {
-      fullNameInput.value = miniNameInput.value;
+    const name = (miniNameInput?.value || '').toString().trim();
+    
+    if (!name) {
+      setHint('name', 'Please enter your name');
+      miniNameInput?.focus();
+      return;
     }
-    miniBox.style.display = 'none';
-    fullForm.classList.remove('hidden');
-    syncConditionals();
+    
+    attending.value = 'no';
+    // Show thank you message for declining guests in the mini-box
+    miniBox.innerHTML = '<p style="font-size: 16px; font-family: Alegreya, serif; color: #333; text-align: center; padding: 20px;">Thank you for letting us know. You\'ll be missed, but we\'re grateful for your warm wishes and support from afar.</p>';
+    // Don't show the full form for declining guests
   });
 
   const setHint = (name, msg) => {
@@ -189,14 +202,59 @@
     const phone = (data.get('phone') || '').toString().trim();
     const email = (data.get('email') || '').toString().trim();
 
-    if (invitationPref === 'phone' && !phone) {
+    if (invitationPref === 'text' && !phone) {
       setHint('phone', 'Please provide a phone number.');
       ok = false;
+    } else if (invitationPref === 'text' && phone) {
+      // Validate phone format (numbers only, basic format)
+      const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+      if (!phoneRegex.test(phone)) {
+        setHint('phone', 'Please enter a valid phone number (numbers only).');
+        ok = false;
+      } else if (phone.replace(/\D/g, '').length < 10) {
+        setHint('phone', 'Please enter a valid phone number (at least 10 digits).');
+        ok = false;
+      }
     }
 
     if (invitationPref === 'email' && !email) {
       setHint('email', 'Please provide an email address.');
       ok = false;
+    } else if (invitationPref === 'email' && email) {
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        setHint('email', 'Please enter a valid email address.');
+        ok = false;
+      }
+    }
+
+    if (invitationPref === 'both') {
+      // Validate both phone and email for "Both" option
+      if (!phone) {
+        setHint('phone', 'Please provide a phone number.');
+        ok = false;
+      } else {
+        const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+        if (!phoneRegex.test(phone)) {
+          setHint('phone', 'Please enter a valid phone number (numbers only).');
+          ok = false;
+        } else if (phone.replace(/\D/g, '').length < 10) {
+          setHint('phone', 'Please enter a valid phone number (at least 10 digits).');
+          ok = false;
+        }
+      }
+
+      if (!email) {
+        setHint('email', 'Please provide an email address.');
+        ok = false;
+      } else {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          setHint('email', 'Please enter a valid email address.');
+          ok = false;
+        }
+      }
     }
 
     const plusOne = (data.get('bringing_plus_one') || '').toString();
@@ -215,19 +273,7 @@
   const RSVP_INDEX_KEY = 'wedding_save_the_date_index_v1';
 
   const buildIndex = () => {
-    try {
-      const raw = window.localStorage.getItem(RSVP_STORAGE_KEY);
-      const list = raw ? JSON.parse(raw) : [];
-      const index = {};
-      list.forEach((entry) => {
-        if (entry.email) index[entry.email.toLowerCase()] = entry;
-        if (entry.phone) index[entry.phone.replace(/\D/g, '')] = entry;
-      });
-      window.localStorage.setItem(RSVP_INDEX_KEY, JSON.stringify(index));
-      return index;
-    } catch {
-      return {};
-    }
+    return rebuildAllIndexes();
   };
 
   const getIndex = () => {
@@ -239,45 +285,159 @@
     }
   };
 
-  const findExistingSubmission = (email, phone) => {
-    const index = getIndex();
-    const key = email ? email.toLowerCase() : phone.replace(/\D/g, '');
-    return index[key] || null;
+  const getPhoneIndex = () => {
+    try {
+      const raw = window.localStorage.getItem('wedding_phone_index_v1');
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
   };
 
-  const showUpdatePrompt = (existing) => {
+  const getEmailIndex = () => {
+    try {
+      const raw = window.localStorage.getItem('wedding_email_index_v1');
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  };
+
+  // Rebuild all indexes to ensure they're properly structured
+  const rebuildAllIndexes = () => {
+    try {
+      const raw = window.localStorage.getItem(RSVP_STORAGE_KEY);
+      const list = raw ? JSON.parse(raw) : [];
+      const index = {};
+      const phoneIndex = {};
+      const emailIndex = {};
+      
+      list.forEach((entry) => {
+        // Index by name+email combination for exact matches
+        if (entry.email) {
+          const emailKey = `${entry.name.toLowerCase()}|${entry.email.toLowerCase()}`;
+          index[emailKey] = entry;
+          // Also index by email alone for partial matches
+          emailIndex[entry.email.toLowerCase()] = entry;
+        }
+        // Index by name+phone combination for exact matches
+        if (entry.phone) {
+          const phoneKey = `${entry.name.toLowerCase()}|${entry.phone.replace(/\D/g, '')}`;
+          index[phoneKey] = entry;
+          // Also index by phone alone for partial matches
+          phoneIndex[entry.phone.replace(/\D/g, '')] = entry;
+        }
+      });
+      
+      window.localStorage.setItem(RSVP_INDEX_KEY, JSON.stringify(index));
+      window.localStorage.setItem('wedding_phone_index_v1', JSON.stringify(phoneIndex));
+      window.localStorage.setItem('wedding_email_index_v1', JSON.stringify(emailIndex));
+      return { index, phoneIndex, emailIndex };
+    } catch {
+      return { index: {}, phoneIndex: {}, emailIndex: {} };
+    }
+  };
+
+  const showDiscrepancyWarning = (type, contactInfo) => {
+    const miniBox = document.querySelector('.mini-box');
+    const fullForm = document.getElementById('full-form');
     const formEl = document.getElementById('save-the-date-response-form');
-    const statusEl = document.getElementById('save-the-date-status');
-    if (!formEl || !statusEl) return;
+    if (!miniBox) return;
 
-    const attendingYes = existing.attending === 'yes';
-    const currentStatusText = attendingYes
-      ? 'You previously responded that you can attend.'
-      : 'You previously responded that you cannot attend.';
+    // Store original content before replacing
+    const originalMiniBoxContent = miniBox.innerHTML;
+    const originalFullFormContent = fullForm ? fullForm.innerHTML : '';
 
-    formEl.style.display = 'none';
-    statusEl.innerHTML = `
-      <div style="text-align:center;">
-        <p>${currentStatusText}</p>
-        <p>Do you want to update your response?</p>
-        <button class="button" style="margin-top:12px;" id="update-response-btn">Update Response</button>
+    const warningMessage = type === 'phone' 
+      ? `This phone number (${contactInfo}) is already associated with another response. Please email juliusandluzalen@gmail.com about this discrepancy.`
+      : `This email address (${contactInfo}) is already associated with another response. Please email juliusandluzalen@gmail.com about this discrepancy.`;
+
+    const warningHTML = `
+      <div style="text-align: center; padding: 20px;">
+        <p style="font-size: 16px; font-family: Alegreya, serif; color: #333; margin-bottom: 24px;">${warningMessage}</p>
+        <button class="button" style="margin-top: 12px;" id="continue-btn">Continue Anyway</button>
       </div>
     `;
 
-    const updateBtn = document.getElementById('update-response-btn');
-    if (updateBtn) {
-      updateBtn.addEventListener('click', () => {
-        statusEl.innerHTML = '';
-        formEl.style.display = '';
-        formEl.attending.value = existing.attending;
-        formEl.name.value = existing.name || '';
-        formEl.email.value = existing.email || '';
-        formEl.phone.value = existing.phone || '';
-        formEl.invitation_preference.value = existing.invitation_preference || '';
-        formEl.bringing_plus_one.value = existing.bringing_plus_one || '';
-        formEl.plus_one_name.value = existing.plus_one_name || '';
+    // Hide form and show warning
+    if (formEl) formEl.style.display = 'none';
+    if (fullForm) fullForm.classList.add('hidden');
+    miniBox.style.display = 'block';
+    miniBox.innerHTML = warningHTML;
+
+    const continueBtn = document.getElementById('continue-btn');
+    if (continueBtn) {
+      continueBtn.addEventListener('click', () => {
+        // Restore the original form content
+        miniBox.innerHTML = originalMiniBoxContent;
+        if (fullForm) {
+          fullForm.innerHTML = originalFullFormContent;
+        }
+        
+        // Show the appropriate form section
+        if (formEl) formEl.style.display = '';
         syncConditionals();
       });
+    }
+  };
+
+  const findExistingSubmission = (name, email, phone) => {
+    try {
+      // Get all submissions and check manually
+      const raw = window.localStorage.getItem(RSVP_STORAGE_KEY);
+      const list = raw ? JSON.parse(raw) : [];
+      
+      console.log('Checking for duplicates. Total submissions:', list.length);
+      console.log('Looking for email:', email, 'phone:', phone);
+      
+      // Check if email exists (regardless of name)
+      if (email) {
+        const emailMatch = list.find(entry => entry.email && entry.email.toLowerCase() === email.toLowerCase());
+        if (emailMatch) {
+          console.log('Found email match:', emailMatch);
+          return emailMatch;
+        }
+      }
+      
+      // Check if phone exists (regardless of name)
+      if (phone) {
+        const phoneMatch = list.find(entry => entry.phone && entry.phone.replace(/\D/g, '') === phone.replace(/\D/g, ''));
+        if (phoneMatch) {
+          console.log('Found phone match:', phoneMatch);
+          return phoneMatch;
+        }
+      }
+      
+      console.log('No matches found');
+      return null;
+    } catch (error) {
+      console.log('Error in findExistingSubmission:', error);
+      return null;
+    }
+  };
+
+  const showUpdatePrompt = (existing) => {
+    alert('showUpdatePrompt called!');
+    
+    // Show message in status area with visible styling
+    const statusEl = document.getElementById('save-the-date-status');
+    if (statusEl) {
+      statusEl.innerHTML = '<div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center; font-size: 16px; font-family: Alegreya, serif; color: #d4a574; font-weight: bold; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">Either your email and/or phone number already is in the file, please email juliusandluzalen@gmail.com for assistance<br><br><button class="button" onclick="location.reload()">Start Over</button></div>';
+      statusEl.style.display = 'block';
+      statusEl.style.visibility = 'visible';
+      statusEl.style.opacity = '1';
+      alert('Message set in status element with styling');
+    } else {
+      alert('Status element not found!');
+    }
+    
+    // Hide the form to prevent submission
+    const formEl = document.getElementById('save-the-date-response-form');
+    if (formEl) {
+      formEl.style.display = 'none';
+      alert('Form hidden');
+    } else {
+      alert('Form element not found!');
     }
   };
 
@@ -351,17 +511,31 @@
     // Check for existing submission on load
     const emailInput = form.querySelector('#email');
     const phoneInput = form.querySelector('#phone');
+    const nameInput = document.querySelector('#name'); // Get name from anywhere in document
+    
     const checkExisting = () => {
+      const name = (nameInput?.value || '').toString().trim();
       const email = (emailInput?.value || '').toString().trim();
       const phone = (phoneInput?.value || '').toString().trim();
-      if (email || phone) {
-        const existing = findExistingSubmission(email, phone);
+      
+      console.log('checkExisting called - name:', name, 'email:', email, 'phone:', phone);
+      
+      // Only check if BOTH email AND phone are entered
+      if (email && phone) {
+        console.log('Both email and phone present, checking for duplicates');
+        const existing = findExistingSubmission(name, email, phone);
         if (existing) {
+          console.log('Found existing submission, showing message');
           showUpdatePrompt(existing);
+        } else {
+          console.log('No existing submission found');
         }
+      } else {
+        console.log('Not both fields present, skipping validation');
       }
     };
 
+    // Only check when both email and phone are entered
     emailInput?.addEventListener('blur', checkExisting);
     phoneInput?.addEventListener('blur', checkExisting);
 
@@ -369,7 +543,10 @@
       e.preventDefault();
 
       const data = new FormData(form);
-      if (!validate(data)) return;
+      
+      if (!validate(data)) {
+        return;
+      }
 
       const payload = submissionPayloadFromFormData(data);
       storeSubmission(payload);
@@ -380,7 +557,10 @@
         .then((result) => {
           const attending = payload.attending;
           if (attending === 'yes') {
-            setStatus('Thank you for responding to our save-the-date — we’re looking forward to celebrating with you!');
+            // Show success message in the full form for accepting guests
+            if (fullForm) {
+              fullForm.innerHTML = '<p style="font-size: 16px; font-family: Alegreya, serif; color: #333; text-align: center; padding: 20px;">Joyfully accepted indeed! We\'re so excited to celebrate with you. A formal invitation with all the details will be on its way soon.</p>';
+            }
           } else {
             setStatus('Thank you so much for letting us know. We appreciate you responding to our save-the-date and will miss celebrating with you.');
           }
@@ -390,7 +570,10 @@
         .catch(() => {
           const attending = payload.attending;
           if (attending === 'yes') {
-            setStatus('Thank you for responding to our save-the-date — we’re looking forward to celebrating with you!');
+            // Show success message in the full form for accepting guests
+            if (fullForm) {
+              fullForm.innerHTML = '<p style="font-size: 16px; font-family: Alegreya, serif; color: #333; text-align: center; padding: 20px;">Joyfully accepted indeed! We\'re so excited to celebrate with you. A formal invitation with all the details will be on its way soon.</p>';
+            }
           } else {
             setStatus('Thank you so much for letting us know. We appreciate you responding to our save-the-date and will miss celebrating with you.');
           }
