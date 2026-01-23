@@ -36,8 +36,8 @@
               <p class="joining-question">Will you be joining us on our special day?</p>
               
               <div class="field">
-                <label for="name">Your Name</label>
-                <input id="name" name="name" type="text" inputmode="text" autocomplete="name" />
+                <label for="name">Enter Your Name:</label>
+                <input id="name" name="name" type="text" inputmode="text" autocomplete="name" required />
                 <div class="field-hint" data-hint-for="name"></div>
               </div>
               
@@ -54,13 +54,13 @@
             <div class="full-form hidden" id="full-form">
               <div class="field">
                 <label for="email">Email</label>
-                <input id="email" name="email" type="email" inputmode="email" autocomplete="email" />
+                <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required />
                 <div class="field-hint" data-hint-for="email"></div>
               </div>
 
               <div class="field">
                 <label for="phone">Phone</label>
-                <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" pattern="[0-9\s\-\+\(\)]*" />
+                <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" pattern="[0-9\s\-\+\(\)]*" required />
                 <div class="field-hint" data-hint-for="phone"></div>
               </div>
 
@@ -76,7 +76,7 @@
 
               <div class="field">
                 <label for="bringing_plus_one">Will you be bringing a plus one?</label>
-                <select id="bringing_plus_one" name="bringing_plus_one">
+                <select id="bringing_plus_one" name="bringing_plus_one" required>
                   <option value="" selected disabled>Select one</option>
                   <option value="no">No</option>
                   <option value="yes">Yes</option>
@@ -86,7 +86,7 @@
 
               <div class="field hidden" data-conditional="plus-one-name">
                 <label for="plus_one_name">Plus one name</label>
-                <input id="plus_one_name" name="plus_one_name" type="text" inputmode="text" autocomplete="name" />
+                <input id="plus_one_name" name="plus_one_name" type="text" inputmode="text" autocomplete="name" required />
                 <div class="field-hint" data-hint-for="plus_one_name"></div>
               </div>
 
