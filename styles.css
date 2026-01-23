@@ -699,6 +699,13 @@ a {
     margin-right: auto;
   }
   
+  /* Replace Save the date image with mobile version */
+  .panel img[src*="Save%20the%20date.png"] {
+    content: url('images/Save the date_mobile.png');
+    transform: scale(1); /* Reset scaling for mobile-specific image */
+    margin: 0; /* Reset margin for mobile-specific image */
+  }
+  
   /* Make mini-box smaller */
   .mini-box {
     padding: 20px !important;
