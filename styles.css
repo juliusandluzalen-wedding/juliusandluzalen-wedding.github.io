@@ -598,6 +598,7 @@ a {
   transform: scale(0.7);
   transform-origin: top center;
   object-position: 0 -30px;
+  opacity: 0.8;
 }
 
 /* Form section with full-width background */
