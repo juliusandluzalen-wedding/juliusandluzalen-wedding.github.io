@@ -791,9 +791,6 @@ a {
     height: auto;
     max-width: none;
   }
-  .form-section {
-    margin: 0 0;
-  }
 }
 
 @media (max-width: 600px) {
@@ -825,9 +822,6 @@ a {
     height: auto;
     max-width: none;
   }
-  .form-section {
-    margin: 0 0;
-  }
 }
 
 @media (max-width: 480px) {
@@ -858,9 +852,6 @@ a {
     width: 100%;
     height: auto;
     max-width: none;
-  }
-  .form-section {
-    margin: 0 0;
   }
 }
 
