@@ -662,7 +662,7 @@ a {
     max-width: 100vw;
     background-image: url('images/savetheDate_bgnd.png');
     background-repeat: repeat;
-    background-size: 50%;
+    background-size: auto;
     background-position: center;
     background-attachment: fixed;
   }
@@ -670,7 +670,7 @@ a {
   body {
     background-image: url('images/savetheDate_bgnd.png');
     background-repeat: repeat;
-    background-size: 50%;
+    background-size: auto;
     background-position: center;
     background-attachment: fixed;
   }
@@ -689,11 +689,14 @@ a {
   
   /* Scale down the Save the date image */
   .panel img {
-    transform: scale(0.45);
+    transform: scale(0.5);
     transform-origin: center;
-    margin: -40px 0; /* Adjust spacing for smaller image */
+    margin: -50px 0; /* Adjust spacing for smaller image */
     max-width: 100vw;
     height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
   
   /* Make mini-box smaller */
