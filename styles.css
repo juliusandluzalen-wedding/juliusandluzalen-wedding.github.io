@@ -658,17 +658,30 @@ a {
     background-position: top left;
   }
   
+  html, body {
+    max-width: 100vw;
+    overflow-x: hidden !important;
+  }
+  
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
   .container {
     width: 100% !important;
     padding: 0 15px !important;
     margin: 0 auto !important;
+    max-width: 100vw !important;
   }
   
   /* Scale down the Save the date image */
   .panel img {
-    transform: scale(0.60);
+    transform: scale(0.45);
     transform-origin: center;
-    margin: -30px 0; /* Adjust spacing for smaller image */
+    margin: -40px 0; /* Adjust spacing for smaller image */
+    max-width: 100vw;
+    height: auto;
   }
   
   /* Make mini-box smaller */
