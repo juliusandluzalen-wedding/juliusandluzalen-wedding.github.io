@@ -660,6 +660,13 @@ a {
     margin: 0 auto !important;
   }
   
+  /* Scale down the Save the date image */
+  .panel img {
+    transform: scale(0.75);
+    transform-origin: center;
+    margin: -20px 0; /* Adjust spacing for smaller image */
+  }
+  
   /* Make mini-box smaller */
   .mini-box {
     padding: 20px !important;

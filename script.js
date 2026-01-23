@@ -98,6 +98,63 @@
   const miniBox = document.querySelector('.mini-box');
   const fullForm = document.getElementById('full-form');
 
+  // Clear all wedding-related localStorage data
+  const clearWeddingData = () => {
+    localStorage.removeItem('wedding_save_the_date_submissions_v1');
+    localStorage.removeItem('wedding_save_the_date_index_v1');
+    console.log('Wedding data cleared from localStorage');
+  };
+
+  // Clear Google Sheet data
+  const clearGoogleSheet = async () => {
+    try {
+      const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL'; // Replace with your actual URL
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: 'clearSheet' })
+      });
+      
+      if (response.ok) {
+        console.log('Google Sheet cleared successfully');
+        alert('Google Sheet cleared successfully!');
+      } else {
+        console.log('Failed to clear Google Sheet');
+        alert('Failed to clear Google Sheet. Please clear it manually.');
+      }
+    } catch (error) {
+      console.log('Error clearing Google Sheet:', error);
+      alert('Error clearing Google Sheet. Please clear it manually from the sheet.');
+    }
+  };
+
+  // Add clear data buttons for development (remove in production)
+  const addClearButton = () => {
+    const clearBtn = document.createElement('button');
+    clearBtn.textContent = 'Clear Local';
+    clearBtn.style.cssText = 'position: fixed; top: 10px; right: 10px; background: red; color: white; padding: 5px 10px; border: none; border-radius: 5px; font-size: 12px; z-index: 10000; cursor: pointer;';
+    clearBtn.addEventListener('click', () => {
+      clearWeddingData();
+      location.reload();
+    });
+    document.body.appendChild(clearBtn);
+
+    const clearSheetBtn = document.createElement('button');
+    clearSheetBtn.textContent = 'Clear Sheet';
+    clearSheetBtn.style.cssText = 'position: fixed; top: 40px; right: 10px; background: orange; color: white; padding: 5px 10px; border: none; border-radius: 5px; font-size: 12px; z-index: 10000; cursor: pointer;';
+    clearSheetBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to clear the Google Sheet? This cannot be undone.')) {
+        clearGoogleSheet();
+      }
+    });
+    document.body.appendChild(clearSheetBtn);
+  };
+
+  // Initialize clear buttons (remove this line in production)
+  addClearButton();
+
   // Handle accept/decline button clicks
   acceptBtn?.addEventListener('click', () => {
     // Validate name before proceeding
