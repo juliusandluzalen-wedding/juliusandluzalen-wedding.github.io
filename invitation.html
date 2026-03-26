@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Invitation - Charlotte & Theodore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&family=Tenor+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="invitation_styles.css">
+</head>
+<body class="invitation-page">
+    <div class="invitation-container">
+        <div class="invitation-card">
+            <div class="card-header">
+                <div class="decorative-border"></div>
+                <div class="monogram">
+                    <span class="monogram-letter">C</span>
+                    <span class="monogram-ampersand">&</span>
+                    <span class="monogram-letter">T</span>
+                </div>
+            </div>
+            
+            <div class="invitation-content">
+                <div class="invitation-text">
+                    <p class="together-with">Together with their families</p>
+                    
+                    <div class="couple-names">
+                        <h1 class="bride-name">Charlotte</h1>
+                        <span class="ampersand">&</span>
+                        <h1 class="groom-name">Theodore</h1>
+                    </div>
+                    
+                    <p class="invitation-line">Joyfully invite you to celebrate</p>
+                    <p class="invitation-line">their wedding ceremony</p>
+                    
+                    <div class="wedding-details">
+                        <div class="date-section">
+                            <h3 class="date-label">Saturday</h3>
+                            <h2 class="wedding-date">November Seventh</h2>
+                            <h3 class="wedding-year">Two Thousand Twenty-Seven</h3>
+                        </div>
+                        
+                        <div class="time-section">
+                            <h3 class="time-label">At Four O'Clock in the Afternoon</h3>
+                        </div>
+                        
+                        <div class="venue-section">
+                            <h3 class="venue-name">Grand Estate Gardens</h3>
+                            <p class="venue-address">123 Elegance Boulevard</p>
+                            <p class="venue-city">Manhattan, New York</p>
+                        </div>
+                    </div>
+                    
+                    <div class="reception-details">
+                        <p class="reception-label">Reception to follow</p>
+                        <p class="reception-venue">Crystal Ballroom</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="rsvp-section">
+                    <h3 class="rsvp-title">RSVP</h3>
+                    <p class="rsvp-date">Kindly respond by October 15, 2027</p>
+                    <div class="rsvp-options">
+                        <button class="rsvp-button accept" onclick="handleRSVP('accept')">
+                            <span class="button-text">Accepts with Pleasure</span>
+                        </button>
+                        <button class="rsvp-button decline" onclick="handleRSVP('decline')">
+                            <span class="button-text">Declines with Regret</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="back-button">
+                    <a href="save_the_date.html" class="back-link">
+                        <span class="back-arrow">←</span>
+                        <span class="back-text">GO BACK</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="invitation_script.js"></script>
+</body>
+</html>

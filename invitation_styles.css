@@ -1,0 +1,609 @@
+/* Old Money Wedding Invitation Styles */
+
+/* CSS Variables for consistent theming */
+:root {
+    --primary-gold: #c8bf9b;
+    --dark-gold: #bba06c;
+    --light-cream: #f2f1eb;
+    --dark-brown: #3c3333;
+    --warm-white: #ffffff;
+    --soft-gray: #8b7d6b;
+    --accent-cream: #faf8f3;
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #f5f5f0 0%, #e8e6df 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dark-brown);
+    overflow-x: hidden;
+}
+
+/* Container */
+.invitation-container {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    position: relative;
+}
+
+/* Save the Date Specific Styles */
+.save-the-date .envelope {
+    background: var(--light-cream);
+    border: 2px solid var(--primary-gold);
+    border-radius: 8px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.envelope-flap {
+    background: var(--primary-gold);
+    height: 200px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: top;
+}
+
+.envelope-flap.open {
+    transform: rotateX(-180deg);
+    background: linear-gradient(135deg, var(--primary-gold) 0%, var(--dark-gold) 100%);
+}
+
+.seal {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 10;
+}
+
+.seal-content {
+    background: var(--warm-white);
+    border: 3px solid var(--dark-gold);
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.seal-content:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.seal-text {
+    font-family: 'Tenor Sans', serif;
+    font-size: 8px;
+    color: var(--dark-brown);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.wax-seal {
+    width: 40px;
+    height: 40px;
+    background: var(--dark-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.seal-ribbon {
+    display: flex;
+    gap: 2px;
+}
+
+.ribbon-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--warm-white);
+}
+
+.envelope-body {
+    padding: 60px 40px 40px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease 0.3s;
+}
+
+.envelope-body.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Typography */
+.together-with {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--primary-gold);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 30px;
+}
+
+.names-section {
+    margin: 40px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.bride-name, .groom-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--primary-gold);
+    letter-spacing: 2px;
+}
+
+.ampersand {
+    font-family: 'Luxurious Script', cursive;
+    font-size: 36px;
+    color: var(--dark-gold);
+}
+
+.save-the-date-text {
+    margin: 50px 0;
+}
+
+.save-date {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--primary-gold);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+}
+
+.wedding-date .date-number {
+    font-family: 'Tenor Sans', serif;
+    font-size: 56px;
+    font-weight: 600;
+    color: var(--dark-brown);
+    letter-spacing: 6px;
+    display: block;
+    margin: 20px 0;
+}
+
+.wedding-tagline {
+    font-family: 'Beautifully Delicious Script', cursive;
+    font-size: 42px;
+    color: var(--primary-gold);
+    margin: 30px 0;
+}
+
+.formal-invitation {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--dark-brown);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 40px 0;
+    line-height: 1.6;
+}
+
+.rsvp-button {
+    margin-top: 40px;
+}
+
+.rsvp-link {
+    display: inline-block;
+    background: var(--dark-gold);
+    color: var(--warm-white);
+    padding: 20px 40px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-width: 300px;
+}
+
+.rsvp-link:hover {
+    background: var(--primary-gold);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.button-text {
+    display: block;
+    font-family: 'Tenor Sans', serif;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+.button-subtext {
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+/* Invitation Page Styles */
+.invitation-page .invitation-card {
+    background: var(--warm-white);
+    border: 3px solid var(--primary-gold);
+    border-radius: 12px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    position: relative;
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-gold) 0%, var(--dark-gold) 100%);
+    padding: 30px;
+    text-align: center;
+    position: relative;
+}
+
+.decorative-border {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+}
+
+.monogram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: var(--warm-white);
+    font-weight: 700;
+}
+
+.monogram-ampersand {
+    font-family: 'Luxurious Script', cursive;
+    font-size: 42px;
+}
+
+.invitation-content {
+    padding: 60px 40px;
+    text-align: center;
+}
+
+.invitation-text .together-with {
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+
+.couple-names {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.couple-names .bride-name,
+.couple-names .groom-name {
+    font-size: 56px;
+}
+
+.invitation-line {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: var(--dark-brown);
+    margin: 15px 0;
+    line-height: 1.6;
+}
+
+.wedding-details {
+    margin: 60px 0;
+    padding: 40px;
+    background: var(--accent-cream);
+    border: 1px solid var(--primary-gold);
+    border-radius: 8px;
+}
+
+.date-section,
+.time-section,
+.venue-section {
+    margin: 30px 0;
+}
+
+.date-label,
+.time-label {
+    font-family: 'Tenor Sans', serif;
+    font-size: 14px;
+    color: var(--soft-gray);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.wedding-date {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: var(--dark-brown);
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+.wedding-year {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: var(--primary-gold);
+    font-weight: 400;
+}
+
+.venue-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--dark-brown);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.venue-address,
+.venue-city {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    color: var(--soft-gray);
+    margin: 5px 0;
+}
+
+.reception-details {
+    margin: 40px 0;
+    padding: 20px;
+    background: var(--light-cream);
+    border-radius: 6px;
+}
+
+.reception-label {
+    font-family: 'Tenor Sans', serif;
+    font-size: 14px;
+    color: var(--soft-gray);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.reception-venue {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--dark-brown);
+    font-weight: 600;
+}
+
+.card-footer {
+    background: var(--light-cream);
+    padding: 40px;
+    border-top: 2px solid var(--primary-gold);
+}
+
+.rsvp-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.rsvp-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    color: var(--primary-gold);
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.rsvp-date {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    color: var(--soft-gray);
+    margin-bottom: 30px;
+}
+
+.rsvp-options {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.rsvp-button {
+    padding: 15px 30px;
+    border: 2px solid var(--primary-gold);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 200px;
+}
+
+.rsvp-button.accept {
+    background: var(--primary-gold);
+    color: var(--warm-white);
+}
+
+.rsvp-button.accept:hover {
+    background: var(--dark-gold);
+    transform: translateY(-2px);
+}
+
+.rsvp-button.decline {
+    background: transparent;
+    color: var(--dark-brown);
+}
+
+.rsvp-button.decline:hover {
+    background: var(--dark-brown);
+    color: var(--warm-white);
+    transform: translateY(-2px);
+}
+
+.back-button {
+    text-align: center;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--soft-gray);
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: var(--primary-gold);
+}
+
+.back-arrow {
+    font-size: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .invitation-container {
+        padding: 15px;
+    }
+    
+    .bride-name, .groom-name {
+        font-size: 36px;
+    }
+    
+    .couple-names .bride-name,
+    .couple-names .groom-name {
+        font-size: 42px;
+    }
+    
+    .wedding-date .date-number {
+        font-size: 42px;
+    }
+    
+    .wedding-tagline {
+        font-size: 32px;
+    }
+    
+    .wedding-details {
+        padding: 30px 20px;
+    }
+    
+    .rsvp-options {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .rsvp-button {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .envelope-body {
+        padding: 40px 20px 30px;
+    }
+    
+    .invitation-content {
+        padding: 40px 20px;
+    }
+    
+    .names-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .couple-names {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .monogram {
+        font-size: 28px;
+    }
+    
+    .rsvp-title {
+        font-size: 36px;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUp 0.6s ease forwards;
+}
+
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hover Effects */
+.hover-lift {
+    transition: transform 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+    }
+    
+    .envelope-flap,
+    .rsvp-button,
+    .back-button {
+        display: none;
+    }
+    
+    .envelope-body {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
