@@ -506,6 +506,7 @@
       invitation_preference: v('invitation_preference'),
       bringing_plus_one: v('bringing_plus_one'),
       plus_one_name: v('plus_one_name'),
+      additional_guests: v('additional_guests'),
     };
   };
 
@@ -516,9 +517,9 @@
     //
     // Replace with your actual Google Apps Script Web App URL
     // Get this from: Deploy > New deployment > Web app > Copy URL
-    const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYED_WEB_APP_ID/exec';
+    const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwZRMhCsd73LhtP8QPVIhXEkUJfh9Rmw4V159TCeETrPgyshmXJTYuKoylkolGdk-I-/exec';
 
-    if (!GOOGLE_APPS_SCRIPT_WEB_APP_URL || GOOGLE_APPS_SCRIPT_WEB_APP_URL === 'https://script.google.com/macros/s/YOUR_DEPLOYED_WEB_APP_ID/exec') {
+    if (!GOOGLE_APPS_SCRIPT_WEB_APP_URL || GOOGLE_APPS_SCRIPT_WEB_APP_URL === 'https://script.google.com/macros/s/AKfycbwZRMhCsd73LhtP8QPVIhXEkUJfh9Rmw4V159TCeETrPgyshmXJTYuKoylkolGdk-I-/exec') {
       console.log('Google Apps Script URL not configured');
       return Promise.resolve({ ok: false, reason: 'not_configured' });
     }

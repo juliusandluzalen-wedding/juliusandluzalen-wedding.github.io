@@ -4,7 +4,7 @@
 
 // Configuration
 const SPREADSHEET_ID = '18cF9RFS6Y1uLCwHTIkn_t-emyjLebvKiBhdSicXXbb0';
-const SHEET_NAME = 'Form responses 1'; // Your existing sheet name
+const SHEET_NAME = 'Sheet1'; // Try default sheet name
 const CUTOFF_DATE = new Date('2027-05-31T23:59:59'); // May 31, 2027
 
 function doGet(e) {
@@ -22,14 +22,14 @@ function doPost(e) {
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
-    // Get the spreadsheet and sheet
+    // Get the spreadsheet and sheet by index (gid=0 means first sheet)
     const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    const sheet = spreadsheet.getSheetByName(SHEET_NAME);
+    const sheet = spreadsheet.getSheets()[0]; // Get first sheet by index
     
     if (!sheet) {
       return ContentService.createTextOutput(JSON.stringify({
         status: 'error', 
-        message: 'Sheet not found: ' + SHEET_NAME
+        message: 'Could not access the first sheet in the spreadsheet'
       })).setMimeType(ContentService.MimeType.JSON);
     }
     
@@ -61,7 +61,7 @@ function doPost(e) {
     sheet.getRange(lastRow, 1).setNumberFormat('yyyy-mm-dd hh:mm:ss');
     
     // Auto-resize columns for better viewing
-    sheet.autoResizeColumns();
+    sheet.autoResizeColumns(1, sheet.getLastColumn());
     
     // Log the submission for debugging
     Logger.log('New RSVP submission from: ' + (params.name || 'Unknown'));
@@ -104,9 +104,10 @@ function checkFormStatus() {
 function getSubmissionCount() {
   try {
     const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    const sheet = spreadsheet.getSheetByName(SHEET_NAME);
+    const sheets = spreadsheet.getSheets();
+    const sheet = sheets.length > 0 ? sheets[0] : null; // Get first sheet
     
-    if (!sheet) return { count: 0, error: 'Sheet not found' };
+    if (!sheet) return { count: 0, error: 'No sheets found in spreadsheet' };
     
     const lastRow = sheet.getLastRow();
     const headerRow = 1; // Assuming headers are in row 1
@@ -115,10 +116,39 @@ function getSubmissionCount() {
     return { 
       count: submissionCount, 
       lastRow: lastRow,
-      sheetName: SHEET_NAME
+      sheetName: sheet.getName() // Get actual sheet name
     };
   } catch (error) {
     return { count: 0, error: error.toString() };
+  }
+}
+
+// Debug function to check sheet access
+function debugSheetAccess() {
+  try {
+    const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+    Logger.log('Spreadsheet ID: ' + SPREADSHEET_ID);
+    Logger.log('Spreadsheet name: ' + spreadsheet.getName());
+    
+    const sheets = spreadsheet.getSheets();
+    Logger.log('Number of sheets: ' + sheets.length);
+    
+    sheets.forEach((sheet, index) => {
+      Logger.log('Sheet ' + index + ': ' + sheet.getName() + ' (gid: ' + sheet.getSheetId() + ')');
+    });
+    
+    if (sheets.length > 0) {
+      const firstSheet = sheets[0];
+      Logger.log('First sheet name: ' + firstSheet.getName());
+      Logger.log('First sheet ID: ' + firstSheet.getSheetId());
+      Logger.log('First sheet last row: ' + firstSheet.getLastRow());
+      Logger.log('First sheet last column: ' + firstSheet.getLastColumn());
+    }
+    
+    return { success: true, sheetCount: sheets.length };
+  } catch (error) {
+    Logger.log('Debug error: ' + error.toString());
+    return { success: false, error: error.toString() };
   }
 }
 
@@ -170,7 +200,7 @@ function setupSheet() {
       
       sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
       sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
-      sheet.autoResizeColumns();
+      sheet.autoResizeColumns(1, headers.length);
       
       Logger.log('Sheet "' + SHEET_NAME + '" created with headers');
     } else {
@@ -188,9 +218,10 @@ function setupSheet() {
 function getRecentSubmissions(limit = 10) {
   try {
     const spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    const sheet = spreadsheet.getSheetByName(SHEET_NAME);
+    const sheets = spreadsheet.getSheets();
+    const sheet = sheets.length > 0 ? sheets[0] : null; // Get first sheet
     
-    if (!sheet) return { submissions: [], error: 'Sheet not found' };
+    if (!sheet) return { submissions: [], error: 'No sheets found in spreadsheet' };
     
     const lastRow = sheet.getLastRow();
     const headerRow = 1;
