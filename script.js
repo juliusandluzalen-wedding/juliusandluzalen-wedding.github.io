@@ -519,6 +519,8 @@
     // Get this from: Deploy > New deployment > Web app > Copy URL
     const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxaebZnF-QnIPVMNu6F1tOf1X-XQhnPnyQhVlnQhVP1OIATOtQDnSIGUeWK-f0UYlTG/exec';
 
+    console.log('Web App URL:', GOOGLE_APPS_SCRIPT_WEB_APP_URL);
+
     if (!GOOGLE_APPS_SCRIPT_WEB_APP_URL || GOOGLE_APPS_SCRIPT_WEB_APP_URL === 'https://script.google.com/macros/s/AKfycbxaebZnF-QnIPVMNu6F1tOf1X-XQhnPnyQhVlnQhVP1OIATOtQDnSIGUeWK-f0UYlTG/exec') {
       console.log('Google Apps Script URL not configured');
       return Promise.resolve({ ok: false, reason: 'not_configured' });
@@ -531,11 +533,15 @@
       source: 'wedding_website'
     };
 
+    console.log('Final payload to send:', payloadWithTimestamp);
+
     // Use fetch API with CORS workaround
     const formData = new URLSearchParams();
     Object.keys(payloadWithTimestamp).forEach(key => {
       formData.append(key, payloadWithTimestamp[key]);
     });
+
+    console.log('Form data prepared:', formData.toString());
 
     return fetch(GOOGLE_APPS_SCRIPT_WEB_APP_URL, {
       method: 'POST',
@@ -545,12 +551,14 @@
         'Content-Type': 'application/x-www-form-urlencoded',
       }
     })
-    .then(() => {
+    .then((response) => {
+      console.log('Fetch response received:', response);
       console.log('Google Sheets submission successful');
       return { ok: true };
     })
     .catch((error) => {
       console.error('Google Sheets submission failed:', error);
+      console.error('Error details:', error.message);
       return { ok: false, reason: 'network_error', error: error.message };
     });
   };
@@ -594,20 +602,28 @@
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
+      
+      console.log('Form submission started');
+      console.log('Form element:', form);
 
       const data = new FormData(form);
+      console.log('Form data:', Array.from(data.entries()));
       
       if (!validate(data)) {
+        console.log('Form validation failed');
         return;
       }
 
       const payload = submissionPayloadFromFormData(data);
+      console.log('Payload created:', payload);
       storeSubmission(payload);
 
       setStatus('Sending...');
+      console.log('Submitting to Google...');
 
       submitToGoogle(payload)
         .then((result) => {
+          console.log('Google submission result:', result);
           const attending = payload.attending;
           if (attending === 'yes') {
             // Show success message in the full form for accepting guests
@@ -620,7 +636,8 @@
           form.reset();
           syncConditionals();
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error('Form submission error:', error);
           const attending = payload.attending;
           if (attending === 'yes') {
             // Show success message in the full form for accepting guests
