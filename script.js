@@ -510,7 +510,26 @@
     };
   };
 
-  const submitToGoogle = (payload) => {
+  // Test function to verify Web app is accessible
+window.testWebApp = function() {
+  const testUrl = 'https://script.google.com/macros/s/AKfycbxaebZnF-QnIPVMNu6F1tOf1X-XQhnPnyQhVlnQhVP1OIATOtQDnSIGUeWK-f0UYlTG/exec';
+  console.log('🧪 Testing Web app accessibility...');
+  
+  fetch(testUrl, { method: 'GET', mode: 'no-cors' })
+    .then(() => {
+      console.log('✅ Web app is accessible');
+    })
+    .catch((error) => {
+      console.error('❌ Web app not accessible:', error);
+    });
+};
+
+// Add this to the global scope for easy testing
+if (typeof window !== 'undefined') {
+  window.testWebApp = window.testWebApp;
+}
+
+const submitToGoogle = (payload) => {
     // This site is static (GitHub Pages). Writing to a Google Sheet requires either:
     // 1) a Google Form "formResponse" endpoint, or
     // 2) a Google Apps Script Web App endpoint.
@@ -519,13 +538,8 @@
     // Get this from: Deploy > New deployment > Web app > Copy URL
     const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxaebZnF-QnIPVMNu6F1tOf1X-XQhnPnyQhVlnQhVP1OIATOtQDnSIGUeWK-f0UYlTG/exec';
 
-    console.log('Web App URL:', GOOGLE_APPS_SCRIPT_WEB_APP_URL);
-
-    // Remove the validation check since URL is properly configured
-    // if (!GOOGLE_APPS_SCRIPT_WEB_APP_URL || GOOGLE_APPS_SCRIPT_WEB_APP_URL.includes('YOUR_DEPLOYED_WEB_APP_ID') || GOOGLE_APPS_SCRIPT_WEB_APP_URL.includes('YOUR_SCRIPT_ID_HERE')) {
-    //   console.log('Google Apps Script URL not configured');
-    //   return Promise.resolve({ ok: false, reason: 'not_configured' });
-    // }
+    console.log('🚀 Starting Google Sheets submission...');
+    console.log('📡 Web App URL:', GOOGLE_APPS_SCRIPT_WEB_APP_URL);
 
     // Add timestamp to payload
     const payloadWithTimestamp = {
@@ -534,7 +548,7 @@
       source: 'wedding_website'
     };
 
-    console.log('Final payload to send:', payloadWithTimestamp);
+    console.log('📦 Final payload to send:', payloadWithTimestamp);
 
     // Use fetch API with CORS workaround
     const formData = new URLSearchParams();
@@ -542,7 +556,7 @@
       formData.append(key, payloadWithTimestamp[key]);
     });
 
-    console.log('Form data prepared:', formData.toString());
+    console.log('📋 Form data prepared:', formData.toString());
 
     return fetch(GOOGLE_APPS_SCRIPT_WEB_APP_URL, {
       method: 'POST',
@@ -553,13 +567,13 @@
       }
     })
     .then((response) => {
-      console.log('Fetch response received:', response);
-      console.log('Google Sheets submission successful');
+      console.log('✅ Fetch response received:', response);
+      console.log('🎉 Google Sheets submission successful!');
       return { ok: true };
     })
     .catch((error) => {
-      console.error('Google Sheets submission failed:', error);
-      console.error('Error details:', error.message);
+      console.error('❌ Google Sheets submission failed:', error);
+      console.error('🔍 Error details:', error.message);
       return { ok: false, reason: 'network_error', error: error.message };
     });
   };
