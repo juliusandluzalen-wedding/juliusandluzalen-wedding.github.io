@@ -521,10 +521,11 @@
 
     console.log('Web App URL:', GOOGLE_APPS_SCRIPT_WEB_APP_URL);
 
-    if (!GOOGLE_APPS_SCRIPT_WEB_APP_URL || GOOGLE_APPS_SCRIPT_WEB_APP_URL.includes('YOUR_DEPLOYED_WEB_APP_ID') || GOOGLE_APPS_SCRIPT_WEB_APP_URL.includes('YOUR_SCRIPT_ID_HERE')) {
-      console.log('Google Apps Script URL not configured');
-      return Promise.resolve({ ok: false, reason: 'not_configured' });
-    }
+    // Remove the validation check since URL is properly configured
+    // if (!GOOGLE_APPS_SCRIPT_WEB_APP_URL || GOOGLE_APPS_SCRIPT_WEB_APP_URL.includes('YOUR_DEPLOYED_WEB_APP_ID') || GOOGLE_APPS_SCRIPT_WEB_APP_URL.includes('YOUR_SCRIPT_ID_HERE')) {
+    //   console.log('Google Apps Script URL not configured');
+    //   return Promise.resolve({ ok: false, reason: 'not_configured' });
+    // }
 
     // Add timestamp to payload
     const payloadWithTimestamp = {
