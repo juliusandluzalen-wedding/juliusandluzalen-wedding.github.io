@@ -521,7 +521,7 @@
 
     console.log('Web App URL:', GOOGLE_APPS_SCRIPT_WEB_APP_URL);
 
-    if (!GOOGLE_APPS_SCRIPT_WEB_APP_URL || GOOGLE_APPS_SCRIPT_WEB_APP_URL === 'https://script.google.com/macros/s/AKfycbxaebZnF-QnIPVMNu6F1tOf1X-XQhnPnyQhVlnQhVP1OIATOtQDnSIGUeWK-f0UYlTG/exec') {
+    if (!GOOGLE_APPS_SCRIPT_WEB_APP_URL || GOOGLE_APPS_SCRIPT_WEB_APP_URL.includes('YOUR_DEPLOYED_WEB_APP_ID') || GOOGLE_APPS_SCRIPT_WEB_APP_URL.includes('YOUR_SCRIPT_ID_HERE')) {
       console.log('Google Apps Script URL not configured');
       return Promise.resolve({ ok: false, reason: 'not_configured' });
     }
