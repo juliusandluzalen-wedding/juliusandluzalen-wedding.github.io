@@ -38,19 +38,19 @@ function doPost(e) {
     const timestamp = new Date();
     
     // Map your form fields to sheet columns
-    // Based on your existing sheet structure
+    // Based on your actual sheet structure: Timestamp | Attending | Name | Bringing Plus One | Plus One Name | Phone | Email | Invitation Preference | Additional Guests
     const rowData = [
-      timestamp, // Timestamp column
-      params.name || '',
-      params.email || '',
-      params.phone || '',
-      params.attending || '',
-      params.invitation_preference || '',
-      params.bringing_plus_one || '',
-      params.plus_one_name || '',
-      params.additional_guests || '',
-      params.submitted_at || timestamp.toISOString(),
-      params.source || 'wedding_website'
+      timestamp, // Column A: Timestamp
+      params.attending || '', // Column B: Attending
+      params.name || '', // Column C: Name
+      params.bringing_plus_one || '', // Column D: Bringing Plus One
+      params.plus_one_name || '', // Column E: Plus One Name
+      params.phone || '', // Column F: Phone
+      params.email || '', // Column G: Email
+      params.invitation_preference || '', // Column H: Invitation Preference
+      params.additional_guests || '', // Column I: Additional Guests
+      params.submitted_at || timestamp.toISOString(), // Column J: Submitted At
+      params.source || 'wedding_website' // Column K: Source
     ];
     
     // Add row to sheet

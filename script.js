@@ -517,9 +517,9 @@
     //
     // Replace with your actual Google Apps Script Web App URL
     // Get this from: Deploy > New deployment > Web app > Copy URL
-    const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwZRMhCsd73LhtP8QPVIhXEkUJfh9Rmw4V159TCeETrPgyshmXJTYuKoylkolGdk-I-/exec';
+    const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxaebZnF-QnIPVMNu6F1tOf1X-XQhnPnyQhVlnQhVP1OIATOtQDnSIGUeWK-f0UYlTG/exec';
 
-    if (!GOOGLE_APPS_SCRIPT_WEB_APP_URL || GOOGLE_APPS_SCRIPT_WEB_APP_URL === 'https://script.google.com/macros/s/AKfycbwZRMhCsd73LhtP8QPVIhXEkUJfh9Rmw4V159TCeETrPgyshmXJTYuKoylkolGdk-I-/exec') {
+    if (!GOOGLE_APPS_SCRIPT_WEB_APP_URL || GOOGLE_APPS_SCRIPT_WEB_APP_URL === 'https://script.google.com/macros/s/AKfycbxaebZnF-QnIPVMNu6F1tOf1X-XQhnPnyQhVlnQhVP1OIATOtQDnSIGUeWK-f0UYlTG/exec') {
       console.log('Google Apps Script URL not configured');
       return Promise.resolve({ ok: false, reason: 'not_configured' });
     }
