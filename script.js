@@ -514,31 +514,43 @@
     // 1) a Google Form "formResponse" endpoint, or
     // 2) a Google Apps Script Web App endpoint.
     //
-    // To enable submission, set one of these (and implement mapping where needed):
-    const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyfxTDPai30EsgkV8AMiPruFb_RKD2YN4RVgwPrZuA5beg_hbs1gv6iJI976KTvRk9-/exec';
+    // Replace with your actual Google Apps Script Web App URL
+    // Get this from: Deploy > New deployment > Web app > Copy URL
+    const GOOGLE_APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYED_WEB_APP_ID/exec';
 
-    if (!GOOGLE_APPS_SCRIPT_WEB_APP_URL) {
+    if (!GOOGLE_APPS_SCRIPT_WEB_APP_URL || GOOGLE_APPS_SCRIPT_WEB_APP_URL === 'https://script.google.com/macros/s/YOUR_DEPLOYED_WEB_APP_ID/exec') {
+      console.log('Google Apps Script URL not configured');
       return Promise.resolve({ ok: false, reason: 'not_configured' });
     }
 
-    const qs = new URLSearchParams(payload).toString();
-    const url = `${GOOGLE_APPS_SCRIPT_WEB_APP_URL}?callback=cb_${Date.now()}&${qs}`;
+    // Add timestamp to payload
+    const payloadWithTimestamp = {
+      ...payload,
+      timestamp: new Date().toISOString(),
+      source: 'wedding_website'
+    };
 
-    return new Promise((resolve) => {
-      const script = document.createElement('script');
-      const callbackName = `cb_${Date.now()}`;
-      window[callbackName] = (data) => {
-        document.head.removeChild(script);
-        delete window[callbackName];
-        resolve({ ok: true });
-      };
-      script.onerror = () => {
-        document.head.removeChild(script);
-        delete window[callbackName];
-        resolve({ ok: false, reason: 'network_error' });
-      };
-      script.src = url;
-      document.head.appendChild(script);
+    // Use fetch API with CORS workaround
+    const formData = new URLSearchParams();
+    Object.keys(payloadWithTimestamp).forEach(key => {
+      formData.append(key, payloadWithTimestamp[key]);
+    });
+
+    return fetch(GOOGLE_APPS_SCRIPT_WEB_APP_URL, {
+      method: 'POST',
+      mode: 'no-cors', // Required for Google Apps Script
+      body: formData,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    })
+    .then(() => {
+      console.log('Google Sheets submission successful');
+      return { ok: true };
+    })
+    .catch((error) => {
+      console.error('Google Sheets submission failed:', error);
+      return { ok: false, reason: 'network_error', error: error.message };
     });
   };
 
