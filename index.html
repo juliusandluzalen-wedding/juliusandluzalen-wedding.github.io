@@ -18,108 +18,17 @@
     </style>
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-
-    <main id="main" aria-label="Wedding details and RSVP">
+    <main id="main" aria-label="Save the date">
       <section class="section" aria-label="Save the date">
         <div class="container">
           <div class="panel panel-soft">
             <picture>
-              <source media="(max-width: 768px)" srcset="images/Save%20the%20date_mobile_closeForm.png">
-              <img src="images/Save%20the%20date_closeForm.png" alt="Save the date for Julius & Luzalen - RSVPs closed" />
+              <source media="(max-width: 768px)" srcset="Save%20the%20date_mobile_closeForm.png">
+              <img src="Save%20the%20date_closeForm.png" alt="Save the date for Julius & Luzalen - RSVPs closed" />
             </picture>
           </div>
         </div>
       </section>
-      
-      <section class="form-section" aria-label="RSVP Status" style="display: none;">
-        <div class="container">
-          <form id="save-the-date-response-form" class="form mini-form" autocomplete="on">
-            <div class="mini-box">
-              <p class="joining-question">Will you be joining us on<br>our special day?</p>
-              
-              <div class="field">
-                <label for="name">Enter Your Name:</label>
-                <input id="name" name="name" type="text" inputmode="text" autocomplete="name" required />
-                <div class="field-hint" data-hint-for="name"></div>
-              </div>
-              
-              <p class="response-label">RESPONSE:</p>
-              
-              <div class="response-buttons">
-                <button type="button" class="response-btn accepting" id="accept-btn">Joyfully accepting</button>
-                <button type="button" class="response-btn declining" id="decline-btn">Regretfully declining</button>
-              </div>
-            </div>
-            
-            <input type="hidden" id="attending" name="attending" />
-            
-            <div class="full-form hidden" id="full-form">
-              <div class="field">
-                <label for="email">Email</label>
-                <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required />
-                <div class="field-hint" data-hint-for="email"></div>
-              </div>
-
-              <div class="field">
-                <label for="phone">Phone</label>
-                <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" pattern="[0-9\s\-\+\(\)]*" required />
-                <div class="field-hint" data-hint-for="phone"></div>
-              </div>
-
-              <div class="field">
-                <label for="invitation_preference">Invitation preference</label>
-                <select id="invitation_preference" name="invitation_preference" required>
-                  <option value="" selected disabled>Select one</option>
-                  <option value="text">Text</option>
-                  <option value="email">Email</option>
-                  <option value="both">Both</option>
-                </select>
-                <div class="field-hint" data-hint-for="invitation_preference"></div>
-              </div>
-
-              <div class="field">
-                <label for="bringing_plus_one">Will you be bringing a plus one?</label>
-                <select id="bringing_plus_one" name="bringing_plus_one" required>
-                  <option value="" selected disabled>Select one</option>
-                  <option value="no">No</option>
-                  <option value="yes">Yes</option>
-                </select>
-                <div class="field-hint" data-hint-for="bringing_plus_one"></div>
-              </div>
-
-              <div class="field hidden" data-conditional="plus-one-name">
-                <label for="plus_one_name">Plus One's Name</label>
-                <input id="plus_one_name" name="plus_one_name" type="text" inputmode="text" autocomplete="name" />
-                <div class="field-hint" data-hint-for="plus_one_name"></div>
-              </div>
-
-              <div class="field">
-                <p class="form-meta">If you have any questions or need to make arrangements for additional guests or accommodations, we're happy to help — please email <a href="mailto:juliusandluzalen@gmail.com">juliusandluzalen@gmail.com</a></p>
-              </div>
-
-              <div class="form-actions">
-                <button class="button" type="submit">Send Response</button>
-                <p class="form-meta" id="save-the-date-status" role="status" aria-live="polite"></p>
-              </div>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <section class="form-section" aria-label="RSVP Closed">
-        <div class="container">
-          <div class="panel panel-soft">
-            <div class="rsvp-closed-message">
-              <h2>RSVPs Have Closed</h2>
-              <p>Thank you to everyone who responded! The RSVP period has now ended.</p>
-              <p>If you have any questions about your RSVP or need to make changes, please contact us directly at <a href="mailto:juliusandluzalen@gmail.com">juliusandluzalen@gmail.com</a></p>
-            </div>
-          </div>
-        </div>
-      </section>
     </main>
-
-    <script src="script.js"></script>
   </body>
 </html>
