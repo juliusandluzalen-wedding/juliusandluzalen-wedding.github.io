@@ -24,12 +24,15 @@
       <section class="section" aria-label="Save the date">
         <div class="container">
           <div class="panel panel-soft">
-            <img src="images/Save%20the%20date.png" alt="Save the date for Julius & Luzalen" />
+            <picture>
+              <source media="(max-width: 768px)" srcset="images/Save%20the%20date_mobile_closeForm.png">
+              <img src="images/Save%20the%20date_closeForm.png" alt="Save the date for Julius & Luzalen - RSVPs closed" />
+            </picture>
           </div>
         </div>
       </section>
       
-      <section class="form-section" aria-label="RSVP Form">
+      <section class="form-section" aria-label="RSVP Status" style="display: none;">
         <div class="container">
           <form id="save-the-date-response-form" class="form mini-form" autocomplete="on">
             <div class="mini-box">
@@ -101,6 +104,18 @@
               </div>
             </div>
           </form>
+        </div>
+      </section>
+
+      <section class="form-section" aria-label="RSVP Closed">
+        <div class="container">
+          <div class="panel panel-soft">
+            <div class="rsvp-closed-message">
+              <h2>RSVPs Have Closed</h2>
+              <p>Thank you to everyone who responded! The RSVP period has now ended.</p>
+              <p>If you have any questions about your RSVP or need to make changes, please contact us directly at <a href="mailto:juliusandluzalen@gmail.com">juliusandluzalen@gmail.com</a></p>
+            </div>
+          </div>
         </div>
       </section>
     </main>
