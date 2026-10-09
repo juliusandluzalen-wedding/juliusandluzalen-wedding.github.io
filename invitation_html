@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julius & Luzalen | Wedding Invitation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+        
+        .invitation-content {
+            text-align: center;
+            padding: 3rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .invitation-title {
+            font-family: "Alegreya", serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--evergreen);
+            margin-bottom: 2rem;
+        }
+        
+        .invitation-subtitle {
+            font-family: "Alegreya", serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--muted);
+            margin-bottom: 3rem;
+        }
+        
+        .invitation-details {
+            font-family: "Inter", sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--ink);
+            margin-bottom: 2rem;
+        }
+        
+        .invitation-date {
+            font-family: "Alegreya", serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin: 2rem 0;
+        }
+        
+        .invitation-venue {
+            font-family: "Alegreya", serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--evergreen);
+            margin: 1rem 0;
+        }
+        
+        .invitation-footer {
+            margin-top: 3rem;
+            font-style: italic;
+            color: var(--muted);
+        }
+    </style>
+</head>
+<body>
+    <main id="main" aria-label="Wedding Invitation">
+        <section class="section" aria-label="Invitation">
+            <div class="container">
+                <div class="panel panel-soft">
+                    <div class="invitation-content">
+                        <h1 class="invitation-title">Together with their families</h1>
+                        
+                        <h2 class="invitation-subtitle">Julius & Luzalen</h2>
+                        
+                        <p class="invitation-details">
+                            Joyfully request the pleasure of your company<br>
+                            as they celebrate their marriage
+                        </p>
+                        
+                        <div class="invitation-date">
+                            Saturday, November 7, 2027
+                        </div>
+                        
+                        <div class="invitation-venue">
+                            Ceremony at 4:00 PM<br>
+                            Reception to follow
+                        </div>
+                        
+                        <div class="invitation-details">
+                            [Venue Name]<br>
+                            [Venue Address]<br>
+                            [City, State]
+                        </div>
+                        
+                        <div class="invitation-footer">
+                            Dinner and dancing to follow<br>
+                            Formal attire requested
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

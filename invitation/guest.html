@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0f2a22" />
+    <title>Julius & Luzalen | Your Invitation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="invitation-styles.css" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <div class="brand-kicker">Wedding</div>
+          <a href="../index.html" class="brand-title">Julius & Luzalen</a>
+        </div>
+        <nav class="nav">
+          <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="nav-toggle-lines"></span>
+          </button>
+          <div id="nav-links" class="nav-links">
+            <a href="#details">Details</a>
+            <a href="#rsvp">RSVP</a>
+            <a href="../index.html">Home</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" aria-label="Your Invitation">
+      <!-- Hero Section -->
+      <section class="section hero" aria-label="Welcome">
+        <div class="container">
+          <div class="hero-inner">
+            <div class="hero-content">
+              <p class="eyebrow">Dear</p>
+              <h1 class="hero-title" id="guest-name">Loading...</h1>
+              <p class="hero-subtitle" id="invitation-message">Loading your invitation details...</p>
+              <div class="hero-actions">
+                <a href="#rsvp" class="button">RSVP Now</a>
+                <a href="#details" class="button button-ghost">View Details</a>
+              </div>
+            </div>
+            <div class="hero-visual">
+              <div class="hero-banner-wrap">
+                <div class="book">
+                  <div class="book-page"></div>
+                  <div class="book-page"></div>
+                  <div class="book-page"></div>
+                  <div class="book-cover"></div>
+                  <div class="book-foil"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Invitation Details -->
+      <section id="details" class="section section-alt" aria-label="Wedding Details">
+        <div class="container">
+          <div class="section-head">
+            <h2>Reception Details</h2>
+            <p id="wedding-details-text">Your reception celebration details</p>
+          </div>
+
+          <div class="grid two" id="details-grid">
+            <!-- Reception Details -->
+            <div class="panel" id="reception-panel">
+              <h3>Reception</h3>
+              <p><strong>Time:</strong> <span id="reception-time">-</span></p>
+              <p><strong>Venue:</strong> <span id="reception-venue">-</span></p>
+              <p><strong>Address:</strong> <span id="reception-address">-</span></p>
+              <p><strong>Date:</strong> <span id="wedding-date">-</span></p>
+            </div>
+          </div>
+
+          <!-- Party Information -->
+          <div class="panel mt" id="party-info">
+            <h3>Your Party</h3>
+            <p id="party-type-text">-</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- RSVP Section -->
+      <section id="rsvp" class="section" aria-label="RSVP">
+        <div class="container">
+          <div class="section-head">
+            <h2>RSVP</h2>
+            <p>Please let us know if you can join us by <span id="rsvp-deadline">July 15, 2026</span></p>
+          </div>
+
+          <div class="rsvp-container">
+            <form id="rsvp-form" class="rsvp-form">
+              <input type="hidden" id="guest-code" name="guest_code" />
+              
+              <div class="field">
+                <label for="attending">Will you be attending?</label>
+                <select id="attending" name="attending" required>
+                  <option value="">Please select</option>
+                  <option value="yes">Joyfully Accept</option>
+                  <option value="no">Regretfully Decline</option>
+                </select>
+                <div class="field-hint" data-hint-for="attending"></div>
+              </div>
+
+              <!-- Dynamic guest forms will be generated here -->
+              <div id="guest-forms-container"></div>
+
+              <!-- Contact Information -->
+              <div data-conditional="attending-yes" class="hidden">
+                <div class="field">
+                  <label for="email">Email Address</label>
+                  <input type="email" id="email" name="email" placeholder="your@email.com" />
+                  <div class="field-hint" data-hint-for="email"></div>
+                </div>
+
+                <div class="field">
+                  <label for="phone">Phone Number</label>
+                  <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" />
+                  <div class="field-hint" data-hint-for="phone"></div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="button">Submit RSVP</button>
+              </div>
+
+              <p class="form-meta" id="rsvp-status"></p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <h3 class="footer-title">Julius & Luzalen</h3>
+        <p class="footer-sub">August 15, 2026 • New York, NY</p>
+      </div>
+    </footer>
+
+    <script src="../guest-data.js"></script>
+    <script src="guest-script.js"></script>
+  </body>
+</html>

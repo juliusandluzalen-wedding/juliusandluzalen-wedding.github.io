@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0f2a22" />
+    <title>Julius & Luzalen | Wedding Invitation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="invitation-styles.css" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="main" aria-label="Wedding Invitation Login">
+      <section class="section" aria-label="Login">
+        <div class="container">
+          <div class="login-container">
+            <div class="login-card">
+              <div class="login-header">
+                <h1 class="login-title">Julius & Luzalen</h1>
+                <p class="login-subtitle">Enter your unique code to access your invitation</p>
+              </div>
+              
+              <form id="login-form" class="login-form">
+                <div class="field">
+                  <label for="code">Code</label>
+                  <input 
+                    type="text" 
+                    id="code" 
+                    name="code" 
+                    placeholder="Enter your code"
+                    autocomplete="off"
+                    required
+                  />
+                  <div class="field-hint" data-hint-for="code"></div>
+                </div>
+                
+                <div class="form-actions">
+                  <button type="submit" class="button">Access Invitation</button>
+                </div>
+                
+                <p class="login-help">
+                  Can't find your code? Contact us at juliusandluzalen@gmail.com
+                </p>
+              </form>
+              
+              <div id="login-error" class="error-message hidden">
+                <p>Code not found. Please check your code or contact us for assistance.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <script src="../guest-data.js"></script>
+    <script src="invitation-script.js"></script>
+  </body>
+</html>
