@@ -1,7 +1,7 @@
 let guestData = null;
 let guestCode = null;
 
-const REFERENCE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZV9hWLy7qehb445Hligt5Rt2W8SRc6oy3h5kPXAO7IW1rX42u48kJUAFAxDHjMGTi/exec';
+const REFERENCE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEf9X4iekno5UHhVS4EHkd6ou6Dmbz5vp7T-sjRk5xqKRooSU9HxpYuVfKytwEhntx/exec';
 const RESPONSE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKD97SlLHUxVHmouskm9xoN24uGBT2Qvm2TSS6UIelD3l6ofBEfuk0IxuFlFXcld5Y/exec';
 
 console.log('Script loaded, pathname:', window.location.pathname);
