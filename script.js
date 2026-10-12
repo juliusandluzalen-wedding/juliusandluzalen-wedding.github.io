@@ -234,6 +234,55 @@ function initializeRSVPForm() {
             additionalGuestsSection.classList.add('hidden');
             childrenSection.classList.add('hidden');
             accommodationsSection.classList.add('hidden');
+
+            // Remove existing review button if any
+            const existingReviewBtn = document.getElementById('reviewBtn');
+            if (existingReviewBtn) {
+                existingReviewBtn.remove();
+            }
+
+            // Remove existing decline button if any
+            const existingDeclineBtn = document.getElementById('declineBtn');
+            if (existingDeclineBtn) {
+                existingDeclineBtn.remove();
+            }
+
+            // Show decline button
+            const declineBtn = document.createElement('button');
+            declineBtn.type = 'button';
+            declineBtn.textContent = 'Submit Response';
+            declineBtn.id = 'declineBtn';
+            declineBtn.className = 'decline-btn';
+            accommodationsSection.appendChild(declineBtn);
+
+            declineBtn.addEventListener('click', async () => {
+                const rsvpData = {
+                    code: guestCode,
+                    guestName: guestData.name,
+                    attending: 'no',
+                    dietaryRestrictions: '',
+                    accommodations: 'None',
+                    additionalGuests: [],
+                    children: []
+                };
+                const success = await submitToGoogleSheet(rsvpData);
+
+                if (success) {
+                    document.getElementById('successMsg').textContent =
+                        'Thank you for letting us know. We will miss you! If you change your mind, please email us at juliusandluzalen@gmail.com';
+                    document.getElementById('successMsg').classList.remove('error');
+                    document.getElementById('successMsg').classList.add('success');
+                    document.getElementById('successMsg').style.display = 'block';
+                    rsvpForm.style.display = 'none';
+                    declineBtn.style.display = 'none';
+                } else {
+                    document.getElementById('successMsg').textContent =
+                        'Error submitting RSVP. Please try again or email us at juliusandluzalen@gmail.com';
+                    document.getElementById('successMsg').classList.remove('success');
+                    document.getElementById('successMsg').classList.add('error');
+                    document.getElementById('successMsg').style.display = 'block';
+                }
+            });
         }
     });
 
@@ -274,37 +323,6 @@ function initializeRSVPForm() {
         accommodationsSection.classList.remove('hidden');
         const reviewBtn = document.getElementById('reviewBtn');
         if (reviewBtn) reviewBtn.style.display = 'block';
-    });
-
-    // Submit handler for "No" responses
-    rsvpForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const attending = attendingSelect.value;
-
-        if (attending === 'no') {
-            const rsvpData = {
-                code: guestCode,
-                guestName: guestData.name,
-                attending: 'no',
-                dietaryRestrictions: '',
-                accommodations: 'None',
-                additionalGuests: [],
-                children: []
-            };
-            const success = await submitToGoogleSheet(rsvpData);
-
-            if (success) {
-                document.getElementById('successMsg').textContent =
-                    'Thank you for your response. We will miss you! If you need to change your RSVP, please email us at juliusandluzalen@gmail.com';
-                rsvpForm.style.display = 'none';
-            } else {
-                document.getElementById('successMsg').textContent =
-                    'Error submitting RSVP. Please try again or email us at juliusandluzalen@gmail.com';
-                document.getElementById('successMsg').classList.remove('success');
-                document.getElementById('successMsg').classList.add('error');
-            }
-        }
     });
 }
 
