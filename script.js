@@ -2,7 +2,7 @@ let guestData = null;
 let guestCode = null;
 
 const REFERENCE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEf9X4iekno5UHhVS4EHkd6ou6Dmbz5vp7T-sjRk5xqKRooSU9HxpYuVfKytwEhntx/exec';
-const RESPONSE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxOznfN-PDAbytlqo-VdgFtP4EDFNg9jy0GGsv2OGOg2hPVYdqF1-TDzdUhiJ4jyEaW/exec';
+const RESPONSE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyjT32gGB2wGrM0RQEhS0GWjywkUaITSLdOVzrVClNTa3ERmeVfRqiGVZprZ3HnB2G0/exec';
 
 console.log('Script loaded, pathname:', window.location.pathname);
 
@@ -135,10 +135,15 @@ window.handleLookup = function(data) {
 async function checkIfSubmitted(code) {
     try {
         const url = `${RESPONSE_SCRIPT_URL}?action=check&code=${encodeURIComponent(code)}`;
+        console.log('Checking submission status for code:', code);
+        console.log('URL:', url);
         const response = await fetch(url);
+        console.log('Response status:', response.status);
         const data = await response.json();
         console.log('Check submission response:', data);
-        return data.status === 'submitted';
+        const isSubmitted = data.status === 'submitted';
+        console.log('Is submitted:', isSubmitted);
+        return isSubmitted;
     } catch (error) {
         console.error('Error checking submission status:', error);
         return false;
