@@ -59,6 +59,7 @@ async function loadGuestData() {
 
         // Check if already submitted RSVP
         const rsvpSubmitted = localStorage.getItem(`rsvpSubmitted_${guestCode}`);
+        console.log('RSVP submitted status:', rsvpSubmitted, 'for code:', guestCode);
         if (rsvpSubmitted === 'true') {
             showAlreadySubmittedMessage();
         } else {
@@ -239,17 +240,27 @@ function initializeRSVPForm() {
     // Confirm button - submit to Google Sheet
     confirmBtn.addEventListener('click', async () => {
         const rsvpData = collectRSVPData();
+        console.log('Collected RSVP data:', rsvpData);
         const success = await submitToGoogleSheet(rsvpData);
-        
+        console.log('Submission success:', success);
+
+        const successMsg = document.getElementById('successMsg');
+        console.log('Success message element:', successMsg);
+
         if (success) {
-            document.getElementById('successMsg').textContent = 
+            successMsg.textContent =
                 'Thank you for your RSVP! We look forward to celebrating with you. If you need to change your RSVP, please email us at juliusandluzalen@gmail.com';
+            successMsg.classList.remove('error');
+            successMsg.classList.add('success');
+            successMsg.style.display = 'block';
             rsvpForm.style.display = 'none';
+            summarySection.classList.add('hidden');
         } else {
-            document.getElementById('successMsg').textContent = 
+            successMsg.textContent =
                 'Error submitting RSVP. Please try again or email us at juliusandluzalen@gmail.com';
-            document.getElementById('successMsg').classList.remove('success');
-            document.getElementById('successMsg').classList.add('error');
+            successMsg.classList.remove('success');
+            successMsg.classList.add('error');
+            successMsg.style.display = 'block';
         }
     });
 
@@ -273,10 +284,10 @@ function initializeRSVPForm() {
 
         if (attending === 'no') {
             const rsvpData = {
-                unique_code: guestCode,
-                name: guestData.name,
+                code: guestCode,
+                guestName: guestData.name,
                 attending: 'no',
-                primary_dietary_restrictions: '',
+                dietaryRestrictions: '',
                 accommodations: 'None',
                 additionalGuests: [],
                 children: []
@@ -301,10 +312,10 @@ function collectRSVPData() {
     const numAdditionalGuests = guestData.numGuests - 1;
 
     const rsvpData = {
-        unique_code: guestCode,
-        name: guestData.name,
+        code: guestCode,
+        guestName: guestData.name,
         attending: document.getElementById('attending').value,
-        primary_dietary_restrictions: document.getElementById('dietaryRestrictions').value,
+        dietaryRestrictions: document.getElementById('dietaryRestrictions').value,
         accommodations: document.getElementById('accommodations').value,
         additionalGuests: [],
         children: []
@@ -314,7 +325,7 @@ function collectRSVPData() {
         for (let i = 0; i < numAdditionalGuests; i++) {
             rsvpData.additionalGuests.push({
                 name: document.getElementById(`guestName${i}`).value,
-                dietary_restrictions: document.getElementById(`guestDietary${i}`).value
+                dietaryRestrictions: document.getElementById(`guestDietary${i}`).value
             });
         }
     }
@@ -324,7 +335,7 @@ function collectRSVPData() {
             rsvpData.children.push({
                 name: document.getElementById(`childName${i}`).value,
                 age: document.getElementById(`childAge${i}`).value,
-                dietary_restrictions: document.getElementById(`childDietary${i}`).value
+                dietaryRestrictions: document.getElementById(`childDietary${i}`).value
             });
         }
     }
@@ -337,7 +348,7 @@ function showSummary() {
     const rsvpData = collectRSVPData();
 
     const firstName = guestData.name.split(' ')[0];
-    const dietary = rsvpData.primary_dietary_restrictions || 'None';
+    const dietary = rsvpData.dietaryRestrictions || 'None';
     const accommodations = rsvpData.accommodations || 'None';
     const numAdditionalGuests = guestData.numGuests - 1;
 
@@ -348,7 +359,7 @@ function showSummary() {
         summary += `<p><strong>Additional Guests:</strong> ${numAdditionalGuests}</p>`;
         for (let i = 0; i < numAdditionalGuests; i++) {
             const name = rsvpData.additionalGuests[i].name;
-            const guestDietary = rsvpData.additionalGuests[i].dietary_restrictions || 'None';
+            const guestDietary = rsvpData.additionalGuests[i].dietaryRestrictions || 'None';
             summary += `<p>&nbsp;&nbsp;• ${name} - Dietary: ${guestDietary}</p>`;
         }
     }
@@ -358,7 +369,7 @@ function showSummary() {
         for (let i = 0; i < guestData.numChildren; i++) {
             const name = rsvpData.children[i].name;
             const age = rsvpData.children[i].age;
-            const childDietary = rsvpData.children[i].dietary_restrictions || 'None';
+            const childDietary = rsvpData.children[i].dietaryRestrictions || 'None';
             summary += `<p>&nbsp;&nbsp;• ${name}, Age ${age} - Dietary: ${childDietary}</p>`;
         }
     }
@@ -428,26 +439,19 @@ function renderChildrenFields(count) {
 }
 
 async function submitToGoogleSheet(data) {
-    const requestId = crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-        const r = Math.random() * 16 | 0;
-        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-
     try {
         // Convert to form data
         const formData = new FormData();
-        formData.append('unique_code', data.unique_code);
-        formData.append('name', data.name);
+        formData.append('code', data.code);
+        formData.append('guestName', data.guestName);
         formData.append('attending', data.attending);
-        formData.append('primary_dietary_restrictions', data.primary_dietary_restrictions);
+        formData.append('dietaryRestrictions', data.dietaryRestrictions);
         formData.append('accommodations', data.accommodations || 'None');
-        formData.append('additional_attendees_json', JSON.stringify(data.additionalGuests));
-        formData.append('children_json', JSON.stringify(data.children));
-        formData.append('children_attending', data.children.length > 0 ? 'yes' : 'no');
-        formData.append('children_count', data.children.length);
-        formData.append('additional_guests', data.additionalGuests.length);
-        formData.append('guest_count', data.attending === 'yes' ? 1 + data.additionalGuests.length + data.children.length : 0);
-        formData.append('request_id', requestId);
+        formData.append('additionalGuests', JSON.stringify(data.additionalGuests));
+        formData.append('children', JSON.stringify(data.children));
+        formData.append('submissionId', Date.now().toString());
+
+        console.log('Submitting RSVP data:', data);
 
         const response = await fetch(RESPONSE_SCRIPT_URL, {
             method: 'POST',
@@ -457,38 +461,13 @@ async function submitToGoogleSheet(data) {
 
         console.log('Data submitted to Google Sheet');
 
-        // Poll for status
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        const status = await checkRequestStatus(requestId);
-
-        if (status === 'success') {
-            // Mark as submitted in localStorage
-            localStorage.setItem(`rsvpSubmitted_${data.unique_code}`, 'true');
-            return true;
-        } else {
-            console.error('Server reported error:', status);
-            return false;
-        }
+        // Mark as submitted in localStorage
+        localStorage.setItem(`rsvpSubmitted_${data.code}`, 'true');
+        console.log('Set RSVP submitted flag for:', data.code);
+        return true;
     } catch (error) {
         console.error('Error submitting to Google Sheet:', error);
         return false;
-    }
-}
-
-async function checkRequestStatus(requestId) {
-    try {
-        const url = `${RESPONSE_SCRIPT_URL}?action=status&request_id=${requestId}&callback=handleStatus`;
-        return new Promise((resolve) => {
-            window.handleStatus = function(data) {
-                resolve(data.status);
-            };
-            const script = document.createElement('script');
-            script.src = url;
-            document.body.appendChild(script);
-        });
-    } catch (error) {
-        console.error('Error checking status:', error);
-        return 'error';
     }
 }
 
