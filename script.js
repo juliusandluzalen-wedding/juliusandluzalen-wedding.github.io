@@ -1,6 +1,9 @@
 let guestData = null;
 let guestCode = null;
 
+const REFERENCE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZV9hWLy7qehb445Hligt5Rt2W8SRc6oy3h5kPXAO7IW1rX42u48kJUAFAxDHjMGTi/exec';
+const RESPONSE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKD97SlLHUxVHmouskm9xoN24uGBT2Qvm2TSS6UIelD3l6ofBEfuk0IxuFlFXcld5Y/exec';
+
 console.log('Script loaded, pathname:', window.location.pathname);
 
 // Check if we're on the details page
@@ -15,7 +18,7 @@ if (window.location.pathname.includes('details.html')) {
 async function loadGuestData() {
     guestCode = localStorage.getItem('weddingCode');
     console.log('Guest code from localStorage:', guestCode);
-    
+
     if (!guestCode) {
         console.log('No guest code, redirecting to index');
         window.location.href = 'index.html';
@@ -23,12 +26,17 @@ async function loadGuestData() {
     }
 
     try {
-        const response = await fetch('guests.json');
-        const guests = await response.json();
-        guestData = guests[guestCode];
-        
+        const storedGuestData = localStorage.getItem('guestData');
+        if (storedGuestData) {
+            guestData = JSON.parse(storedGuestData);
+        } else {
+            console.log('No guest data in localStorage, redirecting to index');
+            window.location.href = 'index.html';
+            return;
+        }
+
         console.log('Guest data:', guestData);
-        
+
         if (!guestData) {
             console.log('Invalid guest code, redirecting to index');
             window.location.href = 'index.html';
@@ -42,15 +50,21 @@ async function loadGuestData() {
         } else {
             console.error('guestName element not found');
         }
-        
+
         // Start countdown
         startCountdown();
-        
+
         // Smooth scroll for navigation
         initSmoothScroll();
-        
-        // Initialize RSVP form after guest data is loaded
-        initializeRSVPForm();
+
+        // Check if already submitted RSVP
+        const rsvpSubmitted = localStorage.getItem(`rsvpSubmitted_${guestCode}`);
+        if (rsvpSubmitted === 'true') {
+            showAlreadySubmittedMessage();
+        } else {
+            // Initialize RSVP form after guest data is loaded
+            initializeRSVPForm();
+        }
     } catch (error) {
         console.error('Error loading guest data:', error);
         window.location.href = 'index.html';
@@ -70,30 +84,64 @@ function initializeCodeForm() {
     codeForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const code = codeInput.value.trim();
-        
+
         // Check if code contains spaces
         if (/\s/.test(code)) {
             errorMsg.textContent = 'Code cannot contain spaces. Please remove any spaces.';
             codeInput.value = code.replace(/\s/g, '');
             return;
         }
-        
+
         try {
-            const response = await fetch('guests.json');
-            const guests = await response.json();
-            
-            if (guests[code]) {
-                localStorage.setItem('weddingCode', code);
-                window.location.href = 'details.html';
-            } else {
-                errorMsg.textContent = 'Invalid code. Please check your invitation.';
-                codeInput.value = '';
-            }
+            const url = `${REFERENCE_SCRIPT_URL}?action=lookup&code=${encodeURIComponent(code)}&callback=handleLookup`;
+            const script = document.createElement('script');
+            script.src = url;
+            script.onerror = () => {
+                errorMsg.textContent = 'Error validating code. Please try again.';
+            };
+            document.body.appendChild(script);
         } catch (error) {
             console.error('Error validating code:', error);
             errorMsg.textContent = 'Error validating code. Please try again.';
         }
     });
+}
+
+// Global callback for JSONP response
+window.handleLookup = function(data) {
+    const errorMsg = document.getElementById('errorMsg');
+    const codeInput = document.getElementById('codeInput');
+    const code = codeInput.value.trim();
+
+    if (data.status === 'success' && data.record) {
+        guestData = {
+            name: data.record.primary_guest,
+            numGuests: data.record.max_guests,
+            numChildren: data.record.max_children
+        };
+        localStorage.setItem('weddingCode', code);
+        localStorage.setItem('guestData', JSON.stringify(guestData));
+        window.location.href = 'details.html';
+    } else {
+        errorMsg.textContent = 'Invalid code. Please check your invitation.';
+        codeInput.value = '';
+    }
+};
+
+function showAlreadySubmittedMessage() {
+    const rsvpForm = document.getElementById('rsvpForm');
+    const successMsg = document.getElementById('successMsg');
+
+    if (rsvpForm) {
+        rsvpForm.style.display = 'none';
+    }
+
+    if (successMsg) {
+        successMsg.textContent = 'Thank you for filling out the form! If you need to make any changes, please email us at juliusandluzalen@gmail.com';
+        successMsg.classList.remove('error');
+        successMsg.classList.add('success');
+        successMsg.style.display = 'block';
+    }
 }
 
 function initializeRSVPForm() {
@@ -193,11 +241,11 @@ function initializeRSVPForm() {
         
         if (success) {
             document.getElementById('successMsg').textContent = 
-                'Thank you for your RSVP! We look forward to celebrating with you.';
+                'Thank you for your RSVP! We look forward to celebrating with you. If you need to change your RSVP, please email us at juliusandluzalen@gmail.com';
             rsvpForm.style.display = 'none';
         } else {
             document.getElementById('successMsg').textContent = 
-                'Error submitting RSVP. Please try again.';
+                'Error submitting RSVP. Please try again or email us at juliusandluzalen@gmail.com';
             document.getElementById('successMsg').classList.remove('success');
             document.getElementById('successMsg').classList.add('error');
         }
@@ -218,35 +266,43 @@ function initializeRSVPForm() {
     // Submit handler for "No" responses
     rsvpForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const attending = attendingSelect.value;
-        
+
         if (attending === 'no') {
             const rsvpData = {
-                code: guestCode,
-                guestName: guestData.name,
+                unique_code: guestCode,
+                name: guestData.name,
                 attending: 'no',
-                dietaryRestrictions: '',
+                primary_dietary_restrictions: '',
                 accommodations: 'None',
                 additionalGuests: [],
                 children: []
             };
-            await submitToGoogleSheet(rsvpData);
-            document.getElementById('successMsg').textContent = 
-                'Thank you for your response. We will miss you!';
-            rsvpForm.style.display = 'none';
+            const success = await submitToGoogleSheet(rsvpData);
+
+            if (success) {
+                document.getElementById('successMsg').textContent =
+                    'Thank you for your response. We will miss you! If you need to change your RSVP, please email us at juliusandluzalen@gmail.com';
+                rsvpForm.style.display = 'none';
+            } else {
+                document.getElementById('successMsg').textContent =
+                    'Error submitting RSVP. Please try again or email us at juliusandluzalen@gmail.com';
+                document.getElementById('successMsg').classList.remove('success');
+                document.getElementById('successMsg').classList.add('error');
+            }
         }
     });
 }
 
 function collectRSVPData() {
     const numAdditionalGuests = guestData.numGuests - 1;
-    
+
     const rsvpData = {
-        code: guestCode,
-        guestName: guestData.name,
+        unique_code: guestCode,
+        name: guestData.name,
         attending: document.getElementById('attending').value,
-        dietaryRestrictions: document.getElementById('dietaryRestrictions').value,
+        primary_dietary_restrictions: document.getElementById('dietaryRestrictions').value,
         accommodations: document.getElementById('accommodations').value,
         additionalGuests: [],
         children: []
@@ -256,7 +312,7 @@ function collectRSVPData() {
         for (let i = 0; i < numAdditionalGuests; i++) {
             rsvpData.additionalGuests.push({
                 name: document.getElementById(`guestName${i}`).value,
-                dietaryRestrictions: document.getElementById(`guestDietary${i}`).value
+                dietary_restrictions: document.getElementById(`guestDietary${i}`).value
             });
         }
     }
@@ -266,7 +322,7 @@ function collectRSVPData() {
             rsvpData.children.push({
                 name: document.getElementById(`childName${i}`).value,
                 age: document.getElementById(`childAge${i}`).value,
-                dietaryRestrictions: document.getElementById(`childDietary${i}`).value
+                dietary_restrictions: document.getElementById(`childDietary${i}`).value
             });
         }
     }
@@ -277,36 +333,36 @@ function collectRSVPData() {
 function showSummary() {
     const summaryContent = document.getElementById('summaryContent');
     const rsvpData = collectRSVPData();
-    
+
     const firstName = guestData.name.split(' ')[0];
-    const dietary = rsvpData.dietaryRestrictions || 'None';
+    const dietary = rsvpData.primary_dietary_restrictions || 'None';
     const accommodations = rsvpData.accommodations || 'None';
     const numAdditionalGuests = guestData.numGuests - 1;
-    
+
     let summary = `<p><strong>Main Guest:</strong> ${firstName}</p>`;
     summary += `<p><strong>Dietary Restrictions:</strong> ${dietary}</p>`;
-    
+
     if (numAdditionalGuests > 0) {
         summary += `<p><strong>Additional Guests:</strong> ${numAdditionalGuests}</p>`;
         for (let i = 0; i < numAdditionalGuests; i++) {
             const name = rsvpData.additionalGuests[i].name;
-            const guestDietary = rsvpData.additionalGuests[i].dietaryRestrictions || 'None';
+            const guestDietary = rsvpData.additionalGuests[i].dietary_restrictions || 'None';
             summary += `<p>&nbsp;&nbsp;• ${name} - Dietary: ${guestDietary}</p>`;
         }
     }
-    
+
     if (guestData.numChildren > 0) {
         summary += `<p><strong>Children:</strong> ${guestData.numChildren}</p>`;
         for (let i = 0; i < guestData.numChildren; i++) {
             const name = rsvpData.children[i].name;
             const age = rsvpData.children[i].age;
-            const childDietary = rsvpData.children[i].dietaryRestrictions || 'None';
+            const childDietary = rsvpData.children[i].dietary_restrictions || 'None';
             summary += `<p>&nbsp;&nbsp;• ${name}, Age ${age} - Dietary: ${childDietary}</p>`;
         }
     }
-    
+
     summary += `<p><strong>Special Accommodations:</strong> ${accommodations}</p>`;
-    
+
     summaryContent.innerHTML = summary;
 }
 
@@ -370,31 +426,67 @@ function renderChildrenFields(count) {
 }
 
 async function submitToGoogleSheet(data) {
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyo2jlaua0H4YMAmAtT145N4h2B9ueH9MQ-8b7mkIbb7sAUZ84L_DKdBdye3DnZtFuZ/exec';
-    
+    const requestId = crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+        const r = Math.random() * 16 | 0;
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+
     try {
         // Convert to form data
         const formData = new FormData();
-        formData.append('code', data.code);
-        formData.append('guestName', data.guestName);
+        formData.append('unique_code', data.unique_code);
+        formData.append('name', data.name);
         formData.append('attending', data.attending);
-        formData.append('dietaryRestrictions', data.dietaryRestrictions);
+        formData.append('primary_dietary_restrictions', data.primary_dietary_restrictions);
         formData.append('accommodations', data.accommodations || 'None');
-        formData.append('additionalGuests', JSON.stringify(data.additionalGuests));
-        formData.append('children', JSON.stringify(data.children));
-        formData.append('submissionId', Date.now().toString());
-        
-        const response = await fetch(scriptURL, {
+        formData.append('additional_attendees_json', JSON.stringify(data.additionalGuests));
+        formData.append('children_json', JSON.stringify(data.children));
+        formData.append('children_attending', data.children.length > 0 ? 'yes' : 'no');
+        formData.append('children_count', data.children.length);
+        formData.append('additional_guests', data.additionalGuests.length);
+        formData.append('guest_count', data.attending === 'yes' ? 1 + data.additionalGuests.length + data.children.length : 0);
+        formData.append('request_id', requestId);
+
+        const response = await fetch(RESPONSE_SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
             body: formData
         });
-        
+
         console.log('Data submitted to Google Sheet');
-        return true;
+
+        // Poll for status
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const status = await checkRequestStatus(requestId);
+
+        if (status === 'success') {
+            // Mark as submitted in localStorage
+            localStorage.setItem(`rsvpSubmitted_${data.unique_code}`, 'true');
+            return true;
+        } else {
+            console.error('Server reported error:', status);
+            return false;
+        }
     } catch (error) {
         console.error('Error submitting to Google Sheet:', error);
         return false;
+    }
+}
+
+async function checkRequestStatus(requestId) {
+    try {
+        const url = `${RESPONSE_SCRIPT_URL}?action=status&request_id=${requestId}&callback=handleStatus`;
+        return new Promise((resolve) => {
+            window.handleStatus = function(data) {
+                resolve(data.status);
+            };
+            const script = document.createElement('script');
+            script.src = url;
+            document.body.appendChild(script);
+        });
+    } catch (error) {
+        console.error('Error checking status:', error);
+        return 'error';
     }
 }
 

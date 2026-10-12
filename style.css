@@ -1131,3 +1131,10 @@ button:hover {
     font-style: normal;
     color: #3c3936;
 }
+@media (max-width: 768px) {
+    .logo {
+        max-width: 85%;
+        height: auto;
+        object-fit: contain;
+    }
+}
