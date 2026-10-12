@@ -2,7 +2,7 @@ let guestData = null;
 let guestCode = null;
 
 const REFERENCE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEf9X4iekno5UHhVS4EHkd6ou6Dmbz5vp7T-sjRk5xqKRooSU9HxpYuVfKytwEhntx/exec';
-const RESPONSE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKD97SlLHUxVHmouskm9xoN24uGBT2Qvm2TSS6UIelD3l6ofBEfuk0IxuFlFXcld5Y/exec';
+const RESPONSE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxOznfN-PDAbytlqo-VdgFtP4EDFNg9jy0GGsv2OGOg2hPVYdqF1-TDzdUhiJ4jyEaW/exec';
 
 console.log('Script loaded, pathname:', window.location.pathname);
 
@@ -57,10 +57,11 @@ async function loadGuestData() {
         // Smooth scroll for navigation
         initSmoothScroll();
 
-        // Check if already submitted RSVP
-        const rsvpSubmitted = localStorage.getItem(`rsvpSubmitted_${guestCode}`);
-        console.log('RSVP submitted status:', rsvpSubmitted, 'for code:', guestCode);
-        if (rsvpSubmitted === 'true') {
+        // Check if already submitted RSVP from Google Sheet
+        const hasSubmitted = await checkIfSubmitted(guestCode);
+        console.log('Has already submitted:', hasSubmitted);
+
+        if (hasSubmitted) {
             showAlreadySubmittedMessage();
         } else {
             // Initialize RSVP form after guest data is loaded
@@ -130,6 +131,19 @@ window.handleLookup = function(data) {
         codeInput.value = '';
     }
 };
+
+async function checkIfSubmitted(code) {
+    try {
+        const url = `${RESPONSE_SCRIPT_URL}?action=check&code=${encodeURIComponent(code)}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log('Check submission response:', data);
+        return data.status === 'submitted';
+    } catch (error) {
+        console.error('Error checking submission status:', error);
+        return false;
+    }
+}
 
 function showAlreadySubmittedMessage() {
     const rsvpForm = document.getElementById('rsvpForm');
