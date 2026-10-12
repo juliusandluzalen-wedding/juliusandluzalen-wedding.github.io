@@ -2,7 +2,7 @@ let guestData = null;
 let guestCode = null;
 
 const REFERENCE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEf9X4iekno5UHhVS4EHkd6ou6Dmbz5vp7T-sjRk5xqKRooSU9HxpYuVfKytwEhntx/exec';
-const RESPONSE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyjT32gGB2wGrM0RQEhS0GWjywkUaITSLdOVzrVClNTa3ERmeVfRqiGVZprZ3HnB2G0/exec';
+const RESPONSE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwTpTSeEFMbhdc6AmWyagqcAF5HKMGgWLUTMoWUvzrO-z8XeYSuY5yvbZsQcnl0uc_c/exec';
 
 console.log('Script loaded, pathname:', window.location.pathname);
 
