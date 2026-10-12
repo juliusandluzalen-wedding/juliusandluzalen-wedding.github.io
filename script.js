@@ -109,6 +109,7 @@ function initializeCodeForm() {
 
 // Global callback for JSONP response
 window.handleLookup = function(data) {
+    console.log('Lookup response:', data);
     const errorMsg = document.getElementById('errorMsg');
     const codeInput = document.getElementById('codeInput');
     const code = codeInput.value.trim();
@@ -123,6 +124,7 @@ window.handleLookup = function(data) {
         localStorage.setItem('guestData', JSON.stringify(guestData));
         window.location.href = 'details.html';
     } else {
+        console.log('Lookup failed. Status:', data.status, 'Record:', data.record);
         errorMsg.textContent = 'Invalid code. Please check your invitation.';
         codeInput.value = '';
     }
