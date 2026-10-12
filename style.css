@@ -906,6 +906,8 @@ button:hover {
     color: var(--black);
 
     margin-bottom: 10px;
+
+    white-space: nowrap;
 }
 
 .code-entry h2 {
