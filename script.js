@@ -247,13 +247,14 @@ function initializeRSVPForm() {
                 existingDeclineBtn.remove();
             }
 
-            // Show decline button
+            // Show decline button after the form
             const declineBtn = document.createElement('button');
             declineBtn.type = 'button';
             declineBtn.textContent = 'Submit Response';
             declineBtn.id = 'declineBtn';
             declineBtn.className = 'decline-btn';
-            accommodationsSection.appendChild(declineBtn);
+            declineBtn.style.marginTop = '30px';
+            rsvpForm.appendChild(declineBtn);
 
             declineBtn.addEventListener('click', async () => {
                 const rsvpData = {
@@ -269,7 +270,7 @@ function initializeRSVPForm() {
 
                 if (success) {
                     document.getElementById('successMsg').textContent =
-                        'Thank you for letting us know. We will miss you! If you change your mind, please email us at juliusandluzalen@gmail.com';
+                        'We\'ll miss celebrating with you, but we completely understand. Thank you for being part of our story as we begin this new chapter together. If your plans change, please feel free to contact us at juliusandluzalen@gmail.com';
                     document.getElementById('successMsg').classList.remove('error');
                     document.getElementById('successMsg').classList.add('success');
                     document.getElementById('successMsg').style.display = 'block';
